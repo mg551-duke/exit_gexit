@@ -1,24 +1,19 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=surface-gexit
-#SBATCH --array=0-4
-#SBATCH --output=surface-gexit-%A_%a.out
-#SBATCH --error=surface-gexit-%A_%a.err
+#SBATCH --output=surface-gexit-%j.out
+#SBATCH --error=surface-gexit-%j.err
 #SBATCH --time=48:00:00
 #SBATCH --cpus-per-task=20
 #SBATCH --mem=64G
 
 set -euo pipefail
 
-SCRIPTS=(
-  "experiments/cluster_gexit/surface_gexit_d7.py"
-  "experiments/cluster_gexit/surface_gexit_d11.py"
-  "experiments/cluster_gexit/surface_gexit_d15.py"
-  "experiments/cluster_gexit/surface_gexit_d21.py"
-  "experiments/cluster_gexit/surface_gexit_d45.py"
-)
+if [[ $# -ne 1 ]]; then
+  echo "usage: sbatch [resource overrides] experiments/cluster_gexit/run_surface_gexit.sbatch experiments/cluster_gexit/surface_gexit_d21.py" >&2
+  exit 2
+fi
 
-TASK_ID="${SLURM_ARRAY_TASK_ID:-0}"
-SCRIPT="${SCRIPTS[$TASK_ID]}"
+SCRIPT="$1"
 PYTHON_BIN="${PYTHON_BIN:-python}"
 
 cd "${SLURM_SUBMIT_DIR:-$PWD}"

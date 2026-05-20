@@ -7,12 +7,29 @@ centered grid.  The sampled grid is uniform-like in `t = h2(p)`, sparse near
 Submit the full distance sweep from the repository root:
 
 ```bash
-sbatch experiments/cluster_gexit/run_surface_gexit.sbatch
+bash experiments/cluster_gexit/submit_surface_gexit_all.sh
 ```
 
-The Slurm script is a five-task array for `d=7,11,15,21,45`.  Each array task
-requests 20 CPUs and the Python runner uses `SLURM_CPUS_PER_TASK` worker
-processes across independent p-grid points.
+This submits separate Slurm jobs so each distance can request different CPU
+counts.  The current resource requests are:
+
+```text
+d=7:  20 CPUs, 64G
+d=11: 20 CPUs, 64G
+d=15: 20 CPUs, 64G
+d=21:  6 CPUs, 64G
+d=45:  4 CPUs, 64G
+```
+
+The Python runner uses `SLURM_CPUS_PER_TASK` worker processes across independent
+p-grid points, except `d=21` and `d=45` are capped in their entrypoint scripts to
+avoid OOM from too many worker processes.
+
+To submit one distance directly:
+
+```bash
+sbatch --cpus-per-task=6 --mem=64G experiments/cluster_gexit/run_surface_gexit.sbatch experiments/cluster_gexit/surface_gexit_d21.py
+```
 
 Outputs are written under:
 
