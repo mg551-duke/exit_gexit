@@ -30,7 +30,7 @@ def parse_args() -> argparse.Namespace:
         description="Merge independent coupled BSC GEXIT repeat results."
     )
     parser.add_argument("--base", type=Path, required=True)
-    parser.add_argument("--repeat", type=Path, required=True)
+    parser.add_argument("--repeat", type=Path, nargs="+", required=True)
     parser.add_argument(
         "--out-dir",
         type=Path,
@@ -235,13 +235,17 @@ def merge_result_dicts(
 def main() -> None:
     args = parse_args()
     base = load_result(args.base)
-    repeat = load_result(args.repeat)
-    merged = merge_result_dicts(
-        base,
-        repeat,
-        base_path=args.base,
-        repeat_path=args.repeat,
-    )
+    merged = base
+    base_path = args.base
+    for repeat_path in args.repeat:
+        repeat = load_result(repeat_path)
+        merged = merge_result_dicts(
+            merged,
+            repeat,
+            base_path=base_path,
+            repeat_path=repeat_path,
+        )
+        base_path = None
     out_dir = args.out_dir if args.out_dir is not None else args.base.parent
     write_outputs(merged, out_dir, out_dir / "tikz")
 

@@ -11,14 +11,14 @@ bash experiments/cluster_gexit/submit_surface_gexit_all.sh
 ```
 
 This submits separate Slurm jobs so each distance can request different CPU
-counts.  The current resource requests are:
+counts.  The current layout is:
 
 ```text
-d=7:  20 CPUs, 64G
-d=11: 20 CPUs, 64G
-d=15: 20 CPUs, 64G
-d=21:  2 CPUs, 64G
-d=45:  1 CPU,  64G
+d=7:  one 20-CPU, 64G job
+d=11: one 20-CPU, 64G job
+d=15: 20 one-CPU, 64G shard jobs, 750 samples each
+d=21: 20 one-CPU, 64G shard jobs, 500 samples each
+d=45: 20 one-CPU, 64G shard jobs, 250 samples each
 ```
 
 The Python runner uses `SLURM_CPUS_PER_TASK` worker processes across coupled
@@ -26,7 +26,9 @@ sample batches.  Each Monte Carlo sample is reused across the whole p-grid
 before derivatives are averaged, which is the BSC analogue of the paired EXIT
 derivative estimator.  The `d=21` and `d=45` submissions intentionally use very
 few processes because each coupled worker evaluates the full p-grid and carries
-large factor-contraction state.
+large factor-contraction state.  For larger distances, the preferred
+parallelism is therefore across many one-worker Slurm array jobs, then merging
+the independent shards afterward.
 
 Progress is written to the Slurm `.out` file as flushed newline bars, one per
 worker batch, at roughly 5% increments.
@@ -54,6 +56,23 @@ To submit one add-on directly:
 ```bash
 sbatch --cpus-per-task=20 --mem=64G experiments/cluster_gexit/run_surface_gexit.sbatch experiments/cluster_gexit/surface_gexit_d7_addon.py
 ```
+
+To submit only the sharded large-distance jobs:
+
+```bash
+bash experiments/cluster_gexit/submit_surface_gexit_shards.sh
+```
+
+After every shard in an array has completed, merge the shards:
+
+```bash
+python experiments/cluster_gexit/merge_surface_gexit_shards.py --distance 15
+python experiments/cluster_gexit/merge_surface_gexit_shards.py --distance 21
+python experiments/cluster_gexit/merge_surface_gexit_shards.py --distance 45
+```
+
+To add shards to an existing completed main result instead of replacing it,
+pass `--include-existing` to the merge command.
 
 Outputs are written under:
 

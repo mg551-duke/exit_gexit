@@ -1,22 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SBATCH_SCRIPT="experiments/cluster_gexit/run_surface_gexit.sbatch"
-SHARD_SBATCH_SCRIPT="experiments/cluster_gexit/run_surface_gexit_shards.sbatch"
-
-submit_one() {
-  local distance="$1"
-  local cpus="$2"
-  local mem="$3"
-  local script="experiments/cluster_gexit/surface_gexit_d${distance}.py"
-
-  sbatch \
-    --job-name="surface-gexit-d${distance}" \
-    --cpus-per-task="${cpus}" \
-    --mem="${mem}" \
-    "${SBATCH_SCRIPT}" \
-    "${script}"
-}
+SBATCH_SCRIPT="experiments/cluster_gexit/run_surface_gexit_shards.sbatch"
 
 submit_shards() {
   local distance="$1"
@@ -31,11 +16,11 @@ submit_shards() {
     --cpus-per-task=1 \
     --mem="${mem}" \
     --export="ALL,SURFACE_GEXIT_DISTANCE=${distance},SURFACE_GEXIT_SAMPLES=${samples_per_shard},SURFACE_GEXIT_SEED_BASE=${seed_base},SURFACE_GEXIT_SHARD_COUNT=${shard_count}" \
-    "${SHARD_SBATCH_SCRIPT}"
+    "${SBATCH_SCRIPT}"
 }
 
-submit_one 7 20 64G
-submit_one 11 20 64G
+# Same total sample targets as the monolithic jobs, but spread across many
+# one-worker jobs to avoid multiplying memory inside a single process.
 submit_shards 15 20 750 15015000 64G
 submit_shards 21 20 500 21021000 64G
 submit_shards 45 20 250 45045000 64G
