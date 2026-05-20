@@ -20,5 +20,5 @@ submit_one() {
 submit_one 7 20 64G
 submit_one 11 20 64G
 submit_one 15 20 64G
-submit_one 21 6 64G
-submit_one 45 4 64G
+submit_one 21 2 64G
+submit_one 45 1 64G

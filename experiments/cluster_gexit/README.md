@@ -17,15 +17,16 @@ counts.  The current resource requests are:
 d=7:  20 CPUs, 64G
 d=11: 20 CPUs, 64G
 d=15: 20 CPUs, 64G
-d=21:  6 CPUs, 64G
-d=45:  4 CPUs, 64G
+d=21:  2 CPUs, 64G
+d=45:  1 CPU,  64G
 ```
 
 The Python runner uses `SLURM_CPUS_PER_TASK` worker processes across coupled
 sample batches.  Each Monte Carlo sample is reused across the whole p-grid
 before derivatives are averaged, which is the BSC analogue of the paired EXIT
-derivative estimator.  The `d=21` and `d=45` submissions use fewer processes to
-avoid OOM from large factor-contraction state.
+derivative estimator.  The `d=21` and `d=45` submissions intentionally use very
+few processes because each coupled worker evaluates the full p-grid and carries
+large factor-contraction state.
 
 Progress is written to the Slurm `.out` file as flushed newline bars, one per
 worker batch, at roughly 5% increments.
@@ -33,7 +34,7 @@ worker batch, at roughly 5% increments.
 To submit one distance directly:
 
 ```bash
-sbatch --cpus-per-task=6 --mem=64G experiments/cluster_gexit/run_surface_gexit.sbatch experiments/cluster_gexit/surface_gexit_d21.py
+sbatch --cpus-per-task=2 --mem=64G experiments/cluster_gexit/run_surface_gexit.sbatch experiments/cluster_gexit/surface_gexit_d21.py
 ```
 
 Outputs are written under:
