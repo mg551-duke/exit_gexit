@@ -1,0 +1,16 @@
+family,label,csv,derivative_key,target_height,p_half_value,scale_multiplier,dropped_p,grid_dropped_p,n,k
+surface,"d=7, n=85",surface7_HxHzLxLz_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.0487450980392,20.5148833467,0.49 0.51,,85,1
+surface,"d=11, n=221",surface11_HxHzLxLz_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.0269984917044,37.0391061453,,,221,1
+surface,"d=21, n=841",surface21_HxHzLxLz_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.00980975029727,101.939393939,0.47 0.49 0.51 0.53,,841,1
+surface,"d=45, n=3961",surface45_HxHzLxLz_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.00397626861904,251.492063492,,,3961,1
+surface,"d=75, n=11101",surface75_HxHzLxLz_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.00246824610395,405.145985401,,0.4 0.4025 0.405 0.4075 0.41 0.4125 0.415 0.4175 0.42 0.4225 0.425 0.4275 0.43 0.4325 0.435 0.4375 0.44 0.4425 0.445 0.4475 0.4525 0.455 0.4575 0.46 0.4625 0.465 0.4675 0.4725 0.475 0.4775 0.48 0.4825 0.485 0.4875 0.49 0.4925 0.495 0.4975 0.5025 0.505 0.5075 0.51 0.5125 0.515 0.5175 0.52 0.5225 0.525 0.5275 0.5325 0.535 0.5375 0.54 0.5425 0.545 0.5475 0.5525 0.555 0.5575 0.56 0.5625 0.565 0.5675 0.57 0.5725 0.575 0.5775 0.58 0.5825 0.585 0.5875 0.59 0.5925 0.595 0.5975 0.6,11101,1
+surface,"d=251, n=125501",surface251_HxHzLxLz_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.000482864678369,2070.97359736,,,125501,1
+hgp,"n=625, k=25, d=6",hgp_code_625_25_6_peg_sparse_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.568,1.76056338028,,,625,25
+hgp,"n=2025, k=81, d=10",hgp_code_2025_81_10_peg_sparse_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.831604938272,1.20249406176,,,2025,81
+hgp,"n=7225, k=289, d=12",hgp_code_7225_289_12_peg_sparse_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.861176470588,1.16120218579,,,7225,289
+hgp,"n=10000, k=400, d=14",hgp_code_10000_400_14_peg_sparse_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.8583,1.16509379005,,,10000,400
+hgp,"n=22500, k=900",hgp_code_22500_900_d_peg_sparse_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.859111111111,1.16399379203,,,22500,900
+bb,"gross, ell=24, m=12, [[576,16]]",bb_gross_l24_m12_n576_sparse_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.422569444444,2.36647493837,0.495 0.4975 0.5025 0.505,,576,16
+bb,"gross, ell=48, m=24, [[2304,16]]",bb_gross_l48_m24_n2304_sparse_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.236128472222,4.23498272186,,,2304,16
+bb,"two gross, ell=24, m=24, [[1152,12]]",bb_two_gross_l24_m24_n1152_sparse_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.248576388889,4.02290822741,,,1152,12
+bb,"two gross, ell=48, m=48, [[4608,12]]",bb_two_gross_l48_m48_n4608_sparse_exit_rule1_paired_derivative.csv,exact_x_class_component_norm_dp,1,0.127743055556,7.82821418864,,,4608,12

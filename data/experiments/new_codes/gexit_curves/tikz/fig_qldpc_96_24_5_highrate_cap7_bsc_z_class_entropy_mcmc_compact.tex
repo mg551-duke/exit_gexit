@@ -1,0 +1,29 @@
+% Compact PGFPlots panel for sampled qldpc_96_24_5_highrate_cap7 BSC correction-class entropy.
+% Requires \usepackage{pgfplots} and \pgfplotsset{compat=1.18}.
+\begin{tikzpicture}
+\begin{axis}[
+  name=Qldpc96245HighrateCap7BSCClassEntropyAxis,
+  width=\linewidth,
+  height=0.78\linewidth,
+  title={BSC correction-class entropy},
+  title style={font=\scriptsize},
+  xlabel={$p$},
+  ylabel={bits},
+  xmin=0, xmax=0.5,
+  ymin=-0.5, ymax=25.2,
+  grid=both,
+  major grid style={black!12},
+  minor grid style={black!6},
+  tick align=outside,
+  tick label style={font=\scriptsize},
+  label style={font=\scriptsize},
+  legend cell align={left},
+  legend style={draw=black!15, fill=white, fill opacity=0.82, text opacity=1, at={(0.02,0.98)}, anchor=north west, font=\tiny},
+]
+\addplot[black!70, dashed, line width=0.55pt] coordinates {(0,24) (0.5,24)};
+\addlegendentry{$k$}
+\addplot+[color=orange, mark=square*, mark size=1.0pt, line width=0.65pt]
+coordinates {(0,0) (0.025,0.165735757099) (0.05,0.362900993801) (0.075,0.415607524338) (0.1,0.820198582261) (0.125,0.972467265568) (0.15,1.10491475823) (0.175,1.43142517922) (0.2,1.89670772463) (0.225,1.65720511214) (0.25,1.51411158487) (0.275,2.40399970297) (0.3,3.84628783585) (0.325,3.94522226676) (0.35,5.42491180324) (0.375,6.341886303) (0.4,7.23492482577) (0.425,8.81391492506) (0.45,9.71979846506) (0.475,10.5274960662) (0.5,24)};
+\addlegendentry{$\mathbb{E}H(C_X\mid S)$}
+\end{axis}
+\end{tikzpicture}

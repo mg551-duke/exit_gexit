@@ -1,0 +1,5 @@
+exact_runs,list_runs,max_affine_dimension,mean_affine_dimension,mean_list_size,mean_mcmc_acceptance_rate,p_erasure,p_error,posterior_x_class,posterior_x_class_component_norm,posterior_x_class_logical_norm,posterior_x_class_logical_norm_stderr,posterior_x_class_stderr,posterior_x_degeneracy_gain,posterior_x_degeneracy_gain_component_norm,posterior_x_degeneracy_gain_stderr,posterior_x_error,posterior_x_error_component_norm,posterior_x_error_stderr,runs,valid_runs
+2,0,0,0.0,1.0,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2,2
+0,2,21,21.0,1.0,0.005,0.0,0.02,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2,2
+2,0,0,0.0,1.0,,0.2,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2,2
+0,2,21,21.0,5.0,0.055,0.2,0.02,0.4999639320228308,0.012194242244459287,0.4999639320228308,0.49996393202283074,0.49996393202283074,0.6414766105189904,0.015645770988268057,0.5000360679771694,1.1414405425418213,0.027840013232727348,1.0000000000000002,2,2

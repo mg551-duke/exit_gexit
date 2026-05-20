@@ -1,0 +1,29 @@
+% Compact PGFPlots panel for sampled qldpc_96_2_6_witness_densified_cap7 BSC correction-class derivative.
+% Requires \usepackage{pgfplots} and \pgfplotsset{compat=1.18}.
+\begin{tikzpicture}
+\begin{axis}[
+  name=scaledBSCGEXITQldpc9626WitnessDensifiedCap7Axis,
+  width=\linewidth,
+  height=0.78\linewidth,
+  title={BSC correction-class derivative},
+  title style={font=\scriptsize},
+  xlabel={$p$},
+  ylabel={$\widetilde g_X^{\rm BSC}(p)$},
+  xmin=0, xmax=0.5,
+  ymin=-0.02, ymax=1.06,
+  grid=both,
+  major grid style={black!12},
+  minor grid style={black!6},
+  tick align=outside,
+  tick label style={font=\scriptsize},
+  label style={font=\scriptsize},
+  legend cell align={left},
+  legend style={draw=black!15, fill=white, fill opacity=0.82, text opacity=1, at={(0.02,0.02)}, anchor=south west, font=\tiny},
+]
+\addplot[black!60, densely dotted, line width=0.55pt, forget plot] coordinates {(0.5,-0.02) (0.5,1.06)};
+\addplot[black!60, dashed, line width=0.55pt, forget plot] coordinates {(0,1) (0.5,1)};
+\addplot+[color=blue, mark=*, mark size=1.0pt, line width=0.65pt]
+coordinates {(0,0) (0.025,0.603533778015) (0.05,0.417484430259) (0.075,0.314783852142) (0.1,0.434926039545) (0.125,0.672806096686) (0.15,0.797632712188) (0.175,0.688586787768) (0.2,0.523059305296) (0.225,0.553591496287) (0.25,0.755134928461) (0.275,0.96382594107) (0.3,1) (0.325,0.880442984067) (0.35,0.66517142607) (0.375,0.432827448171) (0.4,0.25722337989) (0.425,0.135958584728) (0.45,0.0699079816326) (0.475,0.0271484610793) (0.5,0)};
+\addlegendentry{qldpc\_[[96,2,6]]\_witness\_densified\_cap7 $[[96,2]]$, scaled by $12.7$}
+\end{axis}
+\end{tikzpicture}

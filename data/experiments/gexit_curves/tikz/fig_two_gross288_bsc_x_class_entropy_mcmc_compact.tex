@@ -1,0 +1,29 @@
+% Compact PGFPlots panel for sampled two_gross288 BSC correction-class entropy.
+% Requires \usepackage{pgfplots} and \pgfplotsset{compat=1.18}.
+\begin{tikzpicture}
+\begin{axis}[
+  name=TwoGross288BSCClassEntropyAxis,
+  width=\linewidth,
+  height=0.78\linewidth,
+  title={BSC correction-class entropy},
+  title style={font=\scriptsize},
+  xlabel={$p$},
+  ylabel={bits},
+  xmin=0, xmax=0.5,
+  ymin=-0.5, ymax=12.6,
+  grid=both,
+  major grid style={black!12},
+  minor grid style={black!6},
+  tick align=outside,
+  tick label style={font=\scriptsize},
+  label style={font=\scriptsize},
+  legend cell align={left},
+  legend style={draw=black!15, fill=white, fill opacity=0.82, text opacity=1, at={(0.02,0.98)}, anchor=north west, font=\tiny},
+]
+\addplot[black!70, dashed, line width=0.55pt] coordinates {(0,12) (0.5,12)};
+\addlegendentry{$k$}
+\addplot+[color=orange, mark=square*, mark size=1.0pt, line width=0.65pt]
+coordinates {(0,0) (0.01,0.0784259046663) (0.02,0.170289832256) (0.03,0.268188609406) (0.04,0.192530140374) (0.05,0.356737527424) (0.06,0.466077100744) (0.07,0.357110170208) (0.08,0.571581146067) (0.09,0.824158713092) (0.1,0.609152559461) (0.11,0.720360868315) (0.12,0.808025923343) (0.13,0.78967309431) (0.14,1.06716651862) (0.15,0.92197775824) (0.16,0.953382164431) (0.17,0.779728586793) (0.18,1.07433631655) (0.19,1.31645399898) (0.2,1.20115756472) (0.21,1.25682111504) (0.22,1.472525718) (0.23,1.60248051747) (0.24,1.52519528675) (0.25,1.57614294779) (0.26,1.78824079989) (0.27,1.96439281395) (0.28,1.94844014385) (0.29,1.85113744423) (0.3,2.01795538064) (0.31,2.12499071687) (0.32,2.24585684363) (0.33,2.7151862673) (0.34,3.01335119712) (0.35,3.16401444817) (0.36,3.68765539427) (0.37,4.0201854294) (0.38,4.52185688651) (0.39,5.05661715577) (0.4,5.66637063927) (0.41,6.13898796452) (0.42,7.21445876442) (0.43,8.04019477234) (0.44,8.96183279322) (0.45,9.71067104214) (0.46,10.3181626459) (0.47,10.8583751856) (0.48,11.210703794) (0.49,11.4078242384) (0.5,12)};
+\addlegendentry{$\mathbb{E}H(C_X\mid S)$}
+\end{axis}
+\end{tikzpicture}

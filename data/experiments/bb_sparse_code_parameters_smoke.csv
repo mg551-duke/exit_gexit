@@ -1,0 +1,2 @@
+code,path,n,k,rank_hx,rank_hz,d_upper_bound,d_x_upper_bound,d_z_upper_bound,d_x_proved_optimal,d_z_proved_optimal,d_x_mip_gap,d_z_mip_gap,distance_method
+bb_gross_l24_m12_n576_sparse,codes\bb_gross_l24_m12_n576_sparse.npz,576,16,280,280,24,24,26,False,False,0.9583333333333327,0.9615384615384605,"MILP logical parity, upper bound unless proved_optimal"

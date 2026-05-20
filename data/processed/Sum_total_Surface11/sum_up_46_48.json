@@ -1,0 +1,160 @@
+{
+  "summed_from": [
+    "sparse_modes1234_runs4000_seedoff0_20260108-203533.json",
+    "sparse_modes1234_runs4000_seedoff10000000_20260108-203431.json",
+    "sparse_modes1234_runs4000_seedoff1000000_20260108-203433.json",
+    "sparse_modes1234_runs4000_seedoff11000000_20260108-203531.json",
+    "sparse_modes1234_runs4000_seedoff12000000_20260108-203525.json",
+    "sparse_modes1234_runs4000_seedoff13000000_20260108-203525.json",
+    "sparse_modes1234_runs4000_seedoff14000000_20260108-203352.json",
+    "sparse_modes1234_runs4000_seedoff15000000_20260108-203538.json",
+    "sparse_modes1234_runs4000_seedoff16000000_20260108-203532.json",
+    "sparse_modes1234_runs4000_seedoff17000000_20260108-203543.json",
+    "sparse_modes1234_runs4000_seedoff18000000_20260108-203434.json",
+    "sparse_modes1234_runs4000_seedoff19000000_20260108-203601.json",
+    "sparse_modes1234_runs4000_seedoff20000000_20260108-203436.json",
+    "sparse_modes1234_runs4000_seedoff2000000_20260108-203447.json",
+    "sparse_modes1234_runs4000_seedoff21000000_20260108-203318.json",
+    "sparse_modes1234_runs4000_seedoff22000000_20260108-203527.json",
+    "sparse_modes1234_runs4000_seedoff23000000_20260108-203546.json",
+    "sparse_modes1234_runs4000_seedoff24000000_20260108-203547.json",
+    "sparse_modes1234_runs4000_seedoff25000000_20260108-203555.json",
+    "sparse_modes1234_runs4000_seedoff26000000_20260108-203603.json",
+    "sparse_modes1234_runs4000_seedoff27000000_20260108-203525.json",
+    "sparse_modes1234_runs4000_seedoff28000000_20260108-203610.json",
+    "sparse_modes1234_runs4000_seedoff29000000_20260108-203426.json",
+    "sparse_modes1234_runs4000_seedoff30000000_20260108-203355.json",
+    "sparse_modes1234_runs4000_seedoff3000000_20260108-203629.json",
+    "sparse_modes1234_runs4000_seedoff31000000_20260108-203448.json",
+    "sparse_modes1234_runs4000_seedoff32000000_20260108-203459.json",
+    "sparse_modes1234_runs4000_seedoff33000000_20260108-203432.json",
+    "sparse_modes1234_runs4000_seedoff34000000_20260108-203442.json",
+    "sparse_modes1234_runs4000_seedoff35000000_20260108-203441.json",
+    "sparse_modes1234_runs4000_seedoff36000000_20260108-203303.json",
+    "sparse_modes1234_runs4000_seedoff37000000_20260108-203446.json",
+    "sparse_modes1234_runs4000_seedoff38000000_20260108-203448.json",
+    "sparse_modes1234_runs4000_seedoff39000000_20260108-203440.json",
+    "sparse_modes1234_runs4000_seedoff40000000_20260108-203423.json",
+    "sparse_modes1234_runs4000_seedoff4000000_20260108-203540.json",
+    "sparse_modes1234_runs4000_seedoff41000000_20260108-203442.json",
+    "sparse_modes1234_runs4000_seedoff42000000_20260108-203420.json",
+    "sparse_modes1234_runs4000_seedoff43000000_20260108-203451.json",
+    "sparse_modes1234_runs4000_seedoff44000000_20260108-203454.json",
+    "sparse_modes1234_runs4000_seedoff45000000_20260108-203419.json",
+    "sparse_modes1234_runs4000_seedoff46000000_20260108-203440.json",
+    "sparse_modes1234_runs4000_seedoff47000000_20260108-203023.json",
+    "sparse_modes1234_runs4000_seedoff48000000_20260108-203025.json",
+    "sparse_modes1234_runs4000_seedoff49000000_20260108-203023.json",
+    "sparse_modes1234_runs4000_seedoff5000000_20260108-203554.json",
+    "sparse_modes1234_runs4000_seedoff6000000_20260108-203601.json",
+    "sparse_modes1234_runs4000_seedoff7000000_20260108-203506.json",
+    "sparse_modes1234_runs4000_seedoff8000000_20260108-203552.json",
+    "sparse_modes1234_runs4000_seedoff9000000_20260108-203553.json"
+  ],
+  "results": {
+    "1": [
+      {
+        "p": 0.46,
+        "same": 88,
+        "degen": 0,
+        "logic": 0,
+        "nonconv": 199912,
+        "inact_guesses_total": 0,
+        "stab_guesses_total": 0,
+        "runs": 200000,
+        "avg_time_per_run": 0.008415097979321145,
+        "total_time_all_runs": 1683.019595864229
+      },
+      {
+        "p": 0.48,
+        "same": 14,
+        "degen": 0,
+        "logic": 0,
+        "nonconv": 199986,
+        "inact_guesses_total": 0,
+        "stab_guesses_total": 0,
+        "runs": 200000,
+        "avg_time_per_run": 0.008068277544653975,
+        "total_time_all_runs": 1613.655508930795
+      }
+    ],
+    "2": [
+      {
+        "p": 0.46,
+        "same": 3097,
+        "degen": 169294,
+        "logic": 27609,
+        "nonconv": 0,
+        "inact_guesses_total": 1984266,
+        "stab_guesses_total": 0,
+        "runs": 200000,
+        "avg_time_per_run": 0.013600769623471424,
+        "total_time_all_runs": 2720.153924694285
+      },
+      {
+        "p": 0.48,
+        "same": 1387,
+        "degen": 160627,
+        "logic": 37986,
+        "nonconv": 0,
+        "inact_guesses_total": 2374014,
+        "stab_guesses_total": 0,
+        "runs": 200000,
+        "avg_time_per_run": 0.014055944205755368,
+        "total_time_all_runs": 2811.1888411510736
+      }
+    ],
+    "3": [
+      {
+        "p": 0.46,
+        "same": 2929,
+        "degen": 142019,
+        "logic": 0,
+        "nonconv": 55052,
+        "inact_guesses_total": 0,
+        "stab_guesses_total": 1786340,
+        "runs": 200000,
+        "avg_time_per_run": 0.018196692061619835,
+        "total_time_all_runs": 3639.3384123239666
+      },
+      {
+        "p": 0.48,
+        "same": 1260,
+        "degen": 122344,
+        "logic": 0,
+        "nonconv": 76396,
+        "inact_guesses_total": 0,
+        "stab_guesses_total": 2139295,
+        "runs": 200000,
+        "avg_time_per_run": 0.018224014408951626,
+        "total_time_all_runs": 3644.802881790325
+      }
+    ],
+    "4": [
+      {
+        "p": 0.46,
+        "same": 3065,
+        "degen": 169275,
+        "logic": 27660,
+        "nonconv": 0,
+        "inact_guesses_total": 55052,
+        "stab_guesses_total": 1786340,
+        "runs": 200000,
+        "avg_time_per_run": 0.01880469217480626,
+        "total_time_all_runs": 3760.938434961252
+      },
+      {
+        "p": 0.48,
+        "same": 1402,
+        "degen": 160361,
+        "logic": 38237,
+        "nonconv": 0,
+        "inact_guesses_total": 76396,
+        "stab_guesses_total": 2139295,
+        "runs": 200000,
+        "avg_time_per_run": 0.01712223741570953,
+        "total_time_all_runs": 3424.4474831419066
+      }
+    ]
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "summed_from": [
+    "sparse_modes1234_runs5000_seedoff0_20251105-134407.json",
+    "sparse_modes1234_runs5000_seedoff100000000_20251105-134153.json",
+    "sparse_modes1234_runs5000_seedoff10000000_20251105-133840.json",
+    "sparse_modes1234_runs5000_seedoff110000000_20251105-145239.json",
+    "sparse_modes1234_runs5000_seedoff120000000_20251105-134100.json",
+    "sparse_modes1234_runs5000_seedoff130000000_20251105-134013.json",
+    "sparse_modes1234_runs5000_seedoff140000000_20251105-133925.json",
+    "sparse_modes1234_runs5000_seedoff150000000_20251105-133904.json",
+    "sparse_modes1234_runs5000_seedoff160000000_20251105-140336.json",
+    "sparse_modes1234_runs5000_seedoff170000000_20251105-140339.json",
+    "sparse_modes1234_runs5000_seedoff180000000_20251105-140402.json",
+    "sparse_modes1234_runs5000_seedoff190000000_20251105-140358.json",
+    "sparse_modes1234_runs5000_seedoff200000000_20251105-140344.json",
+    "sparse_modes1234_runs5000_seedoff20000000_20251105-133903.json",
+    "sparse_modes1234_runs5000_seedoff210000000_20251105-140336.json",
+    "sparse_modes1234_runs5000_seedoff220000000_20251105-141230.json",
+    "sparse_modes1234_runs5000_seedoff230000000_20251105-141209.json",
+    "sparse_modes1234_runs5000_seedoff240000000_20251105-141148.json",
+    "sparse_modes1234_runs5000_seedoff250000000_20251105-141213.json",
+    "sparse_modes1234_runs5000_seedoff260000000_20251105-141140.json",
+    "sparse_modes1234_runs5000_seedoff270000000_20251105-141210.json",
+    "sparse_modes1234_runs5000_seedoff280000000_20251105-141214.json",
+    "sparse_modes1234_runs5000_seedoff290000000_20251105-141214.json",
+    "sparse_modes1234_runs5000_seedoff300000000_20251105-141219.json",
+    "sparse_modes1234_runs5000_seedoff30000000_20251105-133540.json",
+    "sparse_modes1234_runs5000_seedoff310000000_20251105-141132.json",
+    "sparse_modes1234_runs5000_seedoff320000000_20251105-141204.json",
+    "sparse_modes1234_runs5000_seedoff330000000_20251105-141132.json",
+    "sparse_modes1234_runs5000_seedoff340000000_20251105-140723.json",
+    "sparse_modes1234_runs5000_seedoff350000000_20251105-140740.json",
+    "sparse_modes1234_runs5000_seedoff360000000_20251105-140728.json",
+    "sparse_modes1234_runs5000_seedoff370000000_20251105-140740.json",
+    "sparse_modes1234_runs5000_seedoff380000000_20251105-140731.json",
+    "sparse_modes1234_runs5000_seedoff390000000_20251105-140728.json",
+    "sparse_modes1234_runs5000_seedoff400000000_20251105-140745.json",
+    "sparse_modes1234_runs5000_seedoff40000000_20251105-133541.json",
+    "sparse_modes1234_runs5000_seedoff410000000_20251105-140731.json",
+    "sparse_modes1234_runs5000_seedoff420000000_20251105-140731.json",
+    "sparse_modes1234_runs5000_seedoff430000000_20251105-140746.json",
+    "sparse_modes1234_runs5000_seedoff440000000_20251105-142851.json",
+    "sparse_modes1234_runs5000_seedoff450000000_20251105-142558.json",
+    "sparse_modes1234_runs5000_seedoff460000000_20251105-142621.json",
+    "sparse_modes1234_runs5000_seedoff470000000_20251105-142532.json",
+    "sparse_modes1234_runs5000_seedoff480000000_20251105-142537.json",
+    "sparse_modes1234_runs5000_seedoff490000000_20251105-142516.json",
+    "sparse_modes1234_runs5000_seedoff50000000_20251105-133536.json",
+    "sparse_modes1234_runs5000_seedoff60000000_20251105-133451.json",
+    "sparse_modes1234_runs5000_seedoff70000000_20251105-134145.json",
+    "sparse_modes1234_runs5000_seedoff80000000_20251105-134129.json",
+    "sparse_modes1234_runs5000_seedoff90000000_20251105-134301.json"
+  ],
+  "results": {
+    "1": [
+      {
+        "p": 0.46,
+        "same": 499,
+        "degen": 0,
+        "logic": 0,
+        "nonconv": 249501,
+        "inact_guesses_total": 0,
+        "stab_guesses_total": 0,
+        "runs": 250000,
+        "avg_time_per_run": 0.06932471956479828,
+        "total_time_all_runs": 17331.179891199572
+      }
+    ],
+    "2": [
+      {
+        "p": 0.46,
+        "same": 21260,
+        "degen": 198507,
+        "logic": 30233,
+        "nonconv": 0,
+        "inact_guesses_total": 4891046,
+        "stab_guesses_total": 0,
+        "runs": 250000,
+        "avg_time_per_run": 0.16693849376767594,
+        "total_time_all_runs": 41734.623441918986
+      }
+    ],
+    "3": [
+      {
+        "p": 0.46,
+        "same": 2876,
+        "degen": 14500,
+        "logic": 0,
+        "nonconv": 232624,
+        "inact_guesses_total": 0,
+        "stab_guesses_total": 1259407,
+        "runs": 250000,
+        "avg_time_per_run": 0.1993609814982377,
+        "total_time_all_runs": 49840.245374559425
+      }
+    ],
+    "4": [
+      {
+        "p": 0.46,
+        "same": 21269,
+        "degen": 198475,
+        "logic": 30256,
+        "nonconv": 0,
+        "inact_guesses_total": 3425984,
+        "stab_guesses_total": 1259407,
+        "runs": 250000,
+        "avg_time_per_run": 0.27525528562857304,
+        "total_time_all_runs": 68813.82140714326
+      }
+    ]
+  }
+}

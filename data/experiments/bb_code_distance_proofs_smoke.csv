@@ -1,0 +1,2 @@
+code,path,n,k,d_x_recorded,d_z_recorded,d_recorded,d_x_proved_exact,d_z_proved_exact,d_proved_exact,x_found_below_candidate,z_found_below_candidate,time_limit_per_row,method
+gross_HxHzLxLz,codes\gross_HxHzLxLz.npz,144,12,12,12,12,False,False,False,,,5.0,MILP infeasibility for each dual logical basis row below recorded candidate

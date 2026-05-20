@@ -1,0 +1,24 @@
+CODE bb_gross_l24_m12_n576_sparse.npz n=576 k=16
+  logical_basis_seconds=0.377
+  x: value=24 optimal=False gap=0.958333333333326 elapsed=120.038
+  z: value=22 optimal=False gap=0.9545454545453667 elapsed=120.044
+CODE bb_two_gross_l24_m24_n1152_sparse.npz n=1152 k=12
+  logical_basis_seconds=2.843
+  x: value=None optimal=False gap=None elapsed=120.071
+  z: value=None optimal=False gap=None elapsed=124.189
+CODE bb_gross_l48_m24_n2304_sparse.npz n=2304 k=16
+  logical_basis_seconds=19.176
+  x: value=None optimal=False gap=None elapsed=120.086
+  z: value=None optimal=False gap=None elapsed=120.097
+CODE bb_two_gross_l48_m48_n4608_sparse.npz n=4608 k=12
+  logical_basis_seconds=161.684
+  x: value=None optimal=False gap=None elapsed=120.299
+  z: value=None optimal=False gap=None elapsed=120.315
+wrote data\experiments\bb_sparse_code_parameters.csv
+HighsMipSolverData::transformNewIntegerFeasibleSolution tmpSolver.run();
+HighsMipSolverData::transformNewIntegerFeasibleSolution tmpSolver.run();
+HighsMipSolverData::transformNewIntegerFeasibleSolution tmpSolver.run();
+HighsMipSolverData::transformNewIntegerFeasibleSolution tmpSolver.run();
+HighsMipSolverData::transformNewIntegerFeasibleSolution tmpSolver.run();
+HighsMipSolverData::transformNewIntegerFeasibleSolution tmpSolver.run();
+HighsMipSolverData::transformNewIntegerFeasibleSolution tmpSolver.run();

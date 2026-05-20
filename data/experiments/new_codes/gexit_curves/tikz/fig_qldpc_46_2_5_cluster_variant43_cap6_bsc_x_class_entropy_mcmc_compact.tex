@@ -1,0 +1,29 @@
+% Compact PGFPlots panel for sampled qldpc_46_2_5_cluster_variant43_cap6 BSC correction-class entropy.
+% Requires \usepackage{pgfplots} and \pgfplotsset{compat=1.18}.
+\begin{tikzpicture}
+\begin{axis}[
+  name=Qldpc4625ClusterVariant43Cap6BSCClassEntropyAxis,
+  width=\linewidth,
+  height=0.78\linewidth,
+  title={BSC correction-class entropy},
+  title style={font=\scriptsize},
+  xlabel={$p$},
+  ylabel={bits},
+  xmin=0, xmax=0.5,
+  ymin=-0.5, ymax=2.1,
+  grid=both,
+  major grid style={black!12},
+  minor grid style={black!6},
+  tick align=outside,
+  tick label style={font=\scriptsize},
+  label style={font=\scriptsize},
+  legend cell align={left},
+  legend style={draw=black!15, fill=white, fill opacity=0.82, text opacity=1, at={(0.02,0.98)}, anchor=north west, font=\tiny},
+]
+\addplot[black!70, dashed, line width=0.55pt] coordinates {(0,2) (0.5,2)};
+\addlegendentry{$k$}
+\addplot+[color=orange, mark=square*, mark size=1.0pt, line width=0.65pt]
+coordinates {(0,0) (0.025,0.0365480853504) (0.05,0.11056796346) (0.075,0.213042646426) (0.1,0.448118429182) (0.125,0.793504227112) (0.15,0.952812224487) (0.175,1.27391945216) (0.2,1.34018941075) (0.225,1.51889090236) (0.25,1.65848419293) (0.275,1.77511162506) (0.3,1.83388028453) (0.325,1.88374948693) (0.35,1.91239942163) (0.375,1.95795294845) (0.4,1.9831784613) (0.425,1.9931019657) (0.45,1.99559113745) (0.475,1.99748445329) (0.5,2)};
+\addlegendentry{$\mathbb{E}H(C_X\mid S)$}
+\end{axis}
+\end{tikzpicture}

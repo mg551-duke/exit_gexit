@@ -1,0 +1,29 @@
+% Compact PGFPlots panel for sampled qldpc_34_4_5_cap7 BSC correction-class derivative.
+% Requires \usepackage{pgfplots} and \pgfplotsset{compat=1.18}.
+\begin{tikzpicture}
+\begin{axis}[
+  name=scaledBSCGEXITQldpc3445Cap7Axis,
+  width=\linewidth,
+  height=0.78\linewidth,
+  title={BSC correction-class derivative},
+  title style={font=\scriptsize},
+  xlabel={$p$},
+  ylabel={$\widetilde g_X^{\rm BSC}(p)$},
+  xmin=0, xmax=0.5,
+  ymin=-0.02, ymax=1.06,
+  grid=both,
+  major grid style={black!12},
+  minor grid style={black!6},
+  tick align=outside,
+  tick label style={font=\scriptsize},
+  label style={font=\scriptsize},
+  legend cell align={left},
+  legend style={draw=black!15, fill=white, fill opacity=0.82, text opacity=1, at={(0.02,0.02)}, anchor=south west, font=\tiny},
+]
+\addplot[black!60, densely dotted, line width=0.55pt, forget plot] coordinates {(0.5,-0.02) (0.5,1.06)};
+\addplot[black!60, dashed, line width=0.55pt, forget plot] coordinates {(0,1) (0.5,1)};
+\addplot+[color=blue, mark=*, mark size=1.0pt, line width=0.65pt]
+coordinates {(0,0) (0.025,0.467184304747) (0.05,0.35160536301) (0.075,0.388169474983) (0.1,0.553566898156) (0.125,0.710701493703) (0.15,0.86271827557) (0.175,0.964818357988) (0.2,1) (0.225,0.93806344006) (0.25,0.807890879671) (0.275,0.660223863582) (0.3,0.462774072377) (0.325,0.2972914145) (0.35,0.167198706374) (0.375,0.106089979606) (0.4,0.060950669806) (0.425,0.0323084271013) (0.45,0.0182885331709) (0.475,0.0144120697869) (0.5,0)};
+\addlegendentry{qldpc\_[[34,4,5]]\_cap7 $[[34,4]]$, scaled by $1.93$}
+\end{axis}
+\end{tikzpicture}

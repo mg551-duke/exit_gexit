@@ -1,0 +1,500 @@
+{
+  "code": {
+    "path": "codes\\surface251_HxHzLxLz.npz",
+    "name": "surface251_HxHzLxLz",
+    "n": 125501,
+    "rank_hx": 62750,
+    "rank_hz": 62750,
+    "k": 1,
+    "rate": 7.968063999490045e-06,
+    "surface_distance": 251
+  },
+  "config": {
+    "runs": 5000,
+    "seed": 0,
+    "include_exact": true,
+    "include_peeling": false,
+    "dual_rule2": false,
+    "paired_derivative": true,
+    "surface_fast_x_class": true,
+    "units": {
+      "unsuffixed_columns": "bits",
+      "_norm": "bits divided by 2n",
+      "_component_norm": "single CSS-component bits divided by n",
+      "_logical_norm": "X class bits divided by k",
+      "_dp": "paired finite-difference derivative with respect to erasure probability",
+      "_norm_dp": "paired derivative of bits divided by 2n",
+      "_component_norm_dp": "paired derivative of single CSS-component bits divided by n",
+      "_logical_norm_dp": "paired derivative of X class bits divided by k"
+    }
+  },
+  "quantity_notation": {
+    "exact_x_error": {
+      "notation": "H(x_E | E, S)",
+      "description": "Raw X-error posterior entropy in bits; equals |E| - rank(H_Z,E)."
+    },
+    "exact_z_error": {
+      "notation": "H(z_E | E, s_X)",
+      "description": "Raw Z-error posterior entropy in bits; equals |E| - rank(H_X,E)."
+    },
+    "exact_error_total": {
+      "notation": "H(x_E, z_E | E, S)",
+      "description": "Raw Pauli posterior entropy in bits."
+    },
+    "exact_x_stabilizer": {
+      "notation": "dim S_X(E)",
+      "description": "Dimension of X-type stabilizers supported inside E."
+    },
+    "exact_z_stabilizer": {
+      "notation": "dim S_Z(E)",
+      "description": "Dimension of Z-type stabilizers supported inside E."
+    },
+    "exact_stabilizer_total": {
+      "notation": "dim S_X(E) + dim S_Z(E)",
+      "description": "Total erased-stabilizer degeneracy in bits."
+    },
+    "exact_x_class": {
+      "notation": "H(C_X | E, S)",
+      "description": "X-correction-class entropy in bits; equals H(x_E | E,S) - dim S_X(E)."
+    },
+    "exact_z_class": {
+      "notation": "H(C_Z | E, s_X)",
+      "description": "Z-correction-class entropy in bits; equals H(z_E | E,s_X) - dim S_Z(E)."
+    },
+    "exact_class_total": {
+      "notation": "H(C | E, S)",
+      "description": "Quantum correction-class entropy in bits."
+    },
+    "exact_x_saved_by_stabilizers": {
+      "notation": "H(x_E | E,S) - H(C_X | E,S)",
+      "description": "Exact X-side guess reduction from erased stabilizer degeneracy."
+    },
+    "exact_z_saved_by_stabilizers": {
+      "notation": "H(z_E | E,s_X) - H(C_Z | E,s_X)",
+      "description": "Exact Z-side guess reduction from erased stabilizer degeneracy."
+    },
+    "exact_saved_by_stabilizers_total": {
+      "notation": "H(x_E,z_E | E,S) - H(C | E,S)",
+      "description": "Exact total guess reduction from erased stabilizer degeneracy."
+    },
+    "peel_x_residual_qubits": {
+      "notation": "|R_X^peel(E)|",
+      "description": "Number of X-side erased qubits left unresolved by primal peeling."
+    },
+    "peel_z_residual_qubits": {
+      "notation": "|R_Z^peel(E)|",
+      "description": "Number of Z-side erased qubits left unresolved by primal peeling."
+    },
+    "peel_residual_qubits_total": {
+      "notation": "|R_X^peel(E)| + |R_Z^peel(E)|",
+      "description": "Total unresolved erased qubits left by primal peeling."
+    },
+    "peel_x_unassisted_guess": {
+      "notation": "H_peel(x_E | E, S)",
+      "description": "Guess bits required after primal peeling without stabilizer aid; approximates H(x_E | E,S)."
+    },
+    "peel_z_unassisted_guess": {
+      "notation": "H_peel(z_E | E, s_X)",
+      "description": "Guess bits required after primal peeling without stabilizer aid; approximates H(z_E | E,s_X)."
+    },
+    "peel_unassisted_guess_total": {
+      "notation": "H_peel(x_E,z_E | E, S)",
+      "description": "Total unassisted peeling guess bits; approximates H(x_E,z_E | E,S)."
+    },
+    "peel_x_stabilizer_found": {
+      "notation": "dim S_X^peel(E)",
+      "description": "X-type erased stabilizers found by dual peeling."
+    },
+    "peel_z_stabilizer_found": {
+      "notation": "dim S_Z^peel(E)",
+      "description": "Z-type erased stabilizers found by dual peeling."
+    },
+    "peel_stabilizer_found_total": {
+      "notation": "dim S_X^peel(E) + dim S_Z^peel(E)",
+      "description": "Total erased stabilizers found by dual peeling."
+    },
+    "peel_x_saved_guess": {
+      "notation": "H_peel(x_E | E,S) - H_peel(C_X | E,S)",
+      "description": "Algorithmic X-side guess reduction from stabilizer aid."
+    },
+    "peel_z_saved_guess": {
+      "notation": "H_peel(z_E | E,s_X) - H_peel(C_Z | E,s_X)",
+      "description": "Algorithmic Z-side guess reduction from stabilizer aid."
+    },
+    "peel_saved_guess_total": {
+      "notation": "H_peel(x_E,z_E | E,S) - H_peel(C | E,S)",
+      "description": "Algorithmic total guess reduction from stabilizer aid."
+    },
+    "peel_x_aided_guess": {
+      "notation": "H_peel(C_X | E, S)",
+      "description": "Guess bits required after stabilizer peeling and primal peeling; approximates H(C_X | E,S)."
+    },
+    "peel_z_aided_guess": {
+      "notation": "H_peel(C_Z | E, s_X)",
+      "description": "Guess bits required after stabilizer peeling and primal peeling; approximates H(C_Z | E,s_X)."
+    },
+    "peel_aided_guess_total": {
+      "notation": "H_peel(C | E, S)",
+      "description": "Total guess bits required after stabilizer peeling and primal peeling; approximates H(C | E,S)."
+    },
+    "dual_primal_residual_total": {
+      "notation": "|R_X^dual+primal(E)| + |R_Z^dual+primal(E)|",
+      "description": "Residual qubit count after stabilizer peeling followed by primal peeling."
+    }
+  },
+  "areas": {
+    "exact_x_class_component_norm_dp": {
+      "trapezoid_derivative_area": 7.968063999490045e-06,
+      "value_min": 0.0,
+      "value_max": 0.0004828646783691016
+    },
+    "exact_x_class_dp": {
+      "trapezoid_derivative_area": 1.0,
+      "value_min": 0.0,
+      "value_max": 60.60000000000062
+    },
+    "exact_x_class_logical_norm_dp": {
+      "trapezoid_derivative_area": 1.0,
+      "value_min": 0.0,
+      "value_max": 60.60000000000062
+    },
+    "exact_x_class_norm_dp": {
+      "trapezoid_derivative_area": 3.984031999745022e-06,
+      "value_min": 0.0,
+      "value_max": 0.0002414323391845508
+    }
+  },
+  "elapsed_seconds": 432.8793910999084,
+  "points": [
+    {
+      "p": 0.4,
+      "p_low": 0.4,
+      "p_high": 0.45,
+      "runs": 5000,
+      "exact_x_class": 0.0,
+      "exact_x_class_stderr": 0.0,
+      "exact_x_class_norm": 0.0,
+      "exact_x_class_norm_stderr": 0.0,
+      "exact_x_class_component_norm": 0.0,
+      "exact_x_class_component_norm_stderr": 0.0,
+      "exact_x_class_logical_norm": 0.0,
+      "exact_x_class_logical_norm_stderr": 0.0,
+      "exact_x_class_dp": 0.0,
+      "exact_x_class_dp_stderr": 0.0,
+      "exact_x_class_norm_dp": 0.0,
+      "exact_x_class_norm_dp_stderr": 0.0,
+      "exact_x_class_component_norm_dp": 0.0,
+      "exact_x_class_component_norm_dp_stderr": 0.0,
+      "exact_x_class_logical_norm_dp": 0.0,
+      "exact_x_class_logical_norm_dp_stderr": 0.0
+    },
+    {
+      "p": 0.45,
+      "p_low": 0.4,
+      "p_high": 0.47,
+      "runs": 5000,
+      "exact_x_class": 0.0,
+      "exact_x_class_stderr": 0.0,
+      "exact_x_class_norm": 0.0,
+      "exact_x_class_norm_stderr": 0.0,
+      "exact_x_class_component_norm": 0.0,
+      "exact_x_class_component_norm_stderr": 0.0,
+      "exact_x_class_logical_norm": 0.0,
+      "exact_x_class_logical_norm_stderr": 0.0,
+      "exact_x_class_dp": 0.0,
+      "exact_x_class_dp_stderr": 0.0,
+      "exact_x_class_norm_dp": 0.0,
+      "exact_x_class_norm_dp_stderr": 0.0,
+      "exact_x_class_component_norm_dp": 0.0,
+      "exact_x_class_component_norm_dp_stderr": 0.0,
+      "exact_x_class_logical_norm_dp": 0.0,
+      "exact_x_class_logical_norm_dp_stderr": 0.0
+    },
+    {
+      "p": 0.47,
+      "p_low": 0.45,
+      "p_high": 0.485,
+      "runs": 5000,
+      "exact_x_class": 0.0,
+      "exact_x_class_stderr": 0.0,
+      "exact_x_class_norm": 0.0,
+      "exact_x_class_norm_stderr": 0.0,
+      "exact_x_class_component_norm": 0.0,
+      "exact_x_class_component_norm_stderr": 0.0,
+      "exact_x_class_logical_norm": 0.0,
+      "exact_x_class_logical_norm_stderr": 0.0,
+      "exact_x_class_dp": 0.4285714285714289,
+      "exact_x_class_dp_stderr": 0.049119522019741554,
+      "exact_x_class_norm_dp": 1.7074422856050106e-06,
+      "exact_x_class_norm_dp_stderr": 1.9569374753883057e-07,
+      "exact_x_class_component_norm_dp": 3.414884571210021e-06,
+      "exact_x_class_component_norm_dp_stderr": 3.9138749507766115e-07,
+      "exact_x_class_logical_norm_dp": 0.4285714285714289,
+      "exact_x_class_logical_norm_dp_stderr": 0.049119522019741554
+    },
+    {
+      "p": 0.485,
+      "p_low": 0.47,
+      "p_high": 0.4925,
+      "runs": 5000,
+      "exact_x_class": 0.015,
+      "exact_x_class_stderr": 0.0017191832706909536,
+      "exact_x_class_norm": 5.976047999617532e-08,
+      "exact_x_class_norm_stderr": 6.849281163859067e-09,
+      "exact_x_class_component_norm": 1.1952095999235065e-07,
+      "exact_x_class_component_norm_stderr": 1.3698562327718134e-08,
+      "exact_x_class_logical_norm": 0.015,
+      "exact_x_class_logical_norm_stderr": 0.0017191832706909536,
+      "exact_x_class_dp": 5.6266666666666625,
+      "exact_x_class_dp_stderr": 0.20902554292425157,
+      "exact_x_class_norm_dp": 2.241682005189864e-05,
+      "exact_x_class_norm_dp_stderr": 8.327644517742949e-07,
+      "exact_x_class_component_norm_dp": 4.483364010379728e-05,
+      "exact_x_class_component_norm_dp_stderr": 1.6655289035485899e-06,
+      "exact_x_class_logical_norm_dp": 5.6266666666666625,
+      "exact_x_class_logical_norm_dp_stderr": 0.20902554292425157
+    },
+    {
+      "p": 0.4925,
+      "p_low": 0.485,
+      "p_high": 0.495,
+      "runs": 5000,
+      "exact_x_class": 0.1266,
+      "exact_x_class_stderr": 0.004703074715795664,
+      "exact_x_class_norm": 5.043784511677198e-07,
+      "exact_x_class_norm_stderr": 1.873720016492165e-08,
+      "exact_x_class_component_norm": 1.0087569023354396e-06,
+      "exact_x_class_component_norm_stderr": 3.74744003298433e-08,
+      "exact_x_class_logical_norm": 0.1266,
+      "exact_x_class_logical_norm_stderr": 0.004703074715795664,
+      "exact_x_class_dp": 21.19999999999998,
+      "exact_x_class_dp_stderr": 0.5780820320397034,
+      "exact_x_class_norm_dp": 8.44614783945944e-05,
+      "exact_x_class_norm_dp_stderr": 2.3030973141238055e-06,
+      "exact_x_class_component_norm_dp": 0.0001689229567891888,
+      "exact_x_class_component_norm_dp_stderr": 4.606194628247611e-06,
+      "exact_x_class_logical_norm_dp": 21.19999999999998,
+      "exact_x_class_logical_norm_dp_stderr": 0.5780820320397034
+    },
+    {
+      "p": 0.495,
+      "p_low": 0.4925,
+      "p_high": 0.4975,
+      "runs": 5000,
+      "exact_x_class": 0.227,
+      "exact_x_class_stderr": 0.005924628278976564,
+      "exact_x_class_norm": 9.0437526394212e-07,
+      "exact_x_class_norm_stderr": 2.360390865003691e-08,
+      "exact_x_class_component_norm": 1.80875052788424e-06,
+      "exact_x_class_component_norm_stderr": 4.720781730007382e-08,
+      "exact_x_class_logical_norm": 0.227,
+      "exact_x_class_logical_norm_stderr": 0.005924628278976564,
+      "exact_x_class_dp": 45.39999999999996,
+      "exact_x_class_dp_stderr": 1.1849256557953116,
+      "exact_x_class_norm_dp": 0.00018087505278842385,
+      "exact_x_class_norm_dp_stderr": 4.720781730007377e-06,
+      "exact_x_class_component_norm_dp": 0.0003617501055768477,
+      "exact_x_class_component_norm_dp_stderr": 9.441563460014754e-06,
+      "exact_x_class_logical_norm_dp": 45.39999999999996,
+      "exact_x_class_logical_norm_dp_stderr": 1.1849256557953116
+    },
+    {
+      "p": 0.4975,
+      "p_low": 0.495,
+      "p_high": 0.5,
+      "runs": 5000,
+      "exact_x_class": 0.3536,
+      "exact_x_class_stderr": 0.006761845348017218,
+      "exact_x_class_norm": 1.40875371510984e-06,
+      "exact_x_class_norm_stderr": 2.693940824382761e-08,
+      "exact_x_class_component_norm": 2.81750743021968e-06,
+      "exact_x_class_component_norm_stderr": 5.387881648765522e-08,
+      "exact_x_class_logical_norm": 0.3536,
+      "exact_x_class_logical_norm_stderr": 0.006761845348017218,
+      "exact_x_class_dp": 55.759999999999955,
+      "exact_x_class_dp_stderr": 1.2684188019938238,
+      "exact_x_class_norm_dp": 0.00022214962430578225,
+      "exact_x_class_norm_dp_stderr": 5.053421096221639e-06,
+      "exact_x_class_component_norm_dp": 0.0004442992486115645,
+      "exact_x_class_component_norm_dp_stderr": 1.0106842192443278e-05,
+      "exact_x_class_logical_norm_dp": 55.759999999999955,
+      "exact_x_class_logical_norm_dp_stderr": 1.2684188019938238
+    },
+    {
+      "p": 0.5,
+      "p_low": 0.4975,
+      "p_high": 0.5025,
+      "runs": 5000,
+      "exact_x_class": 0.5058,
+      "exact_x_class_stderr": 0.0070712992197000755,
+      "exact_x_class_norm": 2.015123385471032e-06,
+      "exact_x_class_norm_stderr": 2.8172282371057106e-08,
+      "exact_x_class_component_norm": 4.030246770942064e-06,
+      "exact_x_class_component_norm_stderr": 5.634456474211421e-08,
+      "exact_x_class_logical_norm": 0.5058,
+      "exact_x_class_logical_norm_stderr": 0.0070712992197000755,
+      "exact_x_class_dp": 60.60000000000062,
+      "exact_x_class_dp_stderr": 1.299948450206651,
+      "exact_x_class_norm_dp": 0.0002414323391845508,
+      "exact_x_class_norm_dp_stderr": 5.1790362236422455e-06,
+      "exact_x_class_component_norm_dp": 0.0004828646783691016,
+      "exact_x_class_component_norm_dp_stderr": 1.0358072447284491e-05,
+      "exact_x_class_logical_norm_dp": 60.60000000000062,
+      "exact_x_class_logical_norm_dp_stderr": 1.299948450206651
+    },
+    {
+      "p": 0.5025,
+      "p_low": 0.5,
+      "p_high": 0.505,
+      "runs": 5000,
+      "exact_x_class": 0.6566,
+      "exact_x_class_stderr": 0.0067159741558296925,
+      "exact_x_class_norm": 2.6159154110325815e-06,
+      "exact_x_class_norm_stderr": 2.6756655946286056e-08,
+      "exact_x_class_component_norm": 5.231830822065163e-06,
+      "exact_x_class_component_norm_stderr": 5.351331189257211e-08,
+      "exact_x_class_logical_norm": 0.6566,
+      "exact_x_class_logical_norm_stderr": 0.0067159741558296925,
+      "exact_x_class_dp": 55.159999999999954,
+      "exact_x_class_dp_stderr": 1.264197183553174,
+      "exact_x_class_norm_dp": 0.00021975920510593523,
+      "exact_x_class_norm_dp_stderr": 5.036602033263377e-06,
+      "exact_x_class_component_norm_dp": 0.00043951841021187046,
+      "exact_x_class_component_norm_dp_stderr": 1.0073204066526753e-05,
+      "exact_x_class_logical_norm_dp": 55.159999999999954,
+      "exact_x_class_logical_norm_dp_stderr": 1.264197183553174
+    },
+    {
+      "p": 0.505,
+      "p_low": 0.5025,
+      "p_high": 0.5075,
+      "runs": 5000,
+      "exact_x_class": 0.7816,
+      "exact_x_class_stderr": 0.005843553492823069,
+      "exact_x_class_norm": 3.113919411000709e-06,
+      "exact_x_class_norm_stderr": 2.32809041076289e-08,
+      "exact_x_class_component_norm": 6.227838822001418e-06,
+      "exact_x_class_component_norm_stderr": 4.65618082152578e-08,
+      "exact_x_class_logical_norm": 0.7816,
+      "exact_x_class_logical_norm_stderr": 0.005843553492823069,
+      "exact_x_class_dp": 44.75999999999996,
+      "exact_x_class_dp_stderr": 1.1789768773370648,
+      "exact_x_class_norm_dp": 0.00017832527230858704,
+      "exact_x_class_norm_dp_stderr": 4.697081606270328e-06,
+      "exact_x_class_component_norm_dp": 0.0003566505446171741,
+      "exact_x_class_component_norm_dp_stderr": 9.394163212540656e-06,
+      "exact_x_class_logical_norm_dp": 44.75999999999996,
+      "exact_x_class_logical_norm_dp_stderr": 1.1789768773370648
+    },
+    {
+      "p": 0.5075,
+      "p_low": 0.505,
+      "p_high": 0.515,
+      "runs": 5000,
+      "exact_x_class": 0.8804,
+      "exact_x_class_stderr": 0.004589485883640478,
+      "exact_x_class_norm": 3.507541772575517e-06,
+      "exact_x_class_norm_stderr": 1.8284658622801725e-08,
+      "exact_x_class_component_norm": 7.015083545151034e-06,
+      "exact_x_class_component_norm_stderr": 3.656931724560345e-08,
+      "exact_x_class_logical_norm": 0.8804,
+      "exact_x_class_logical_norm_stderr": 0.004589485883640478,
+      "exact_x_class_dp": 20.69999999999998,
+      "exact_x_class_dp_stderr": 0.5730337455461993,
+      "exact_x_class_norm_dp": 8.246946239472188e-05,
+      "exact_x_class_norm_dp_stderr": 2.2829847791898048e-06,
+      "exact_x_class_component_norm_dp": 0.00016493892478944375,
+      "exact_x_class_component_norm_dp_stderr": 4.5659695583796096e-06,
+      "exact_x_class_logical_norm_dp": 20.69999999999998,
+      "exact_x_class_logical_norm_dp_stderr": 0.5730337455461993
+    },
+    {
+      "p": 0.515,
+      "p_low": 0.5075,
+      "p_high": 0.53,
+      "runs": 5000,
+      "exact_x_class": 0.9886,
+      "exact_x_class_stderr": 0.0015014855616283349,
+      "exact_x_class_norm": 3.938614034947929e-06,
+      "exact_x_class_norm_stderr": 5.981966524682412e-09,
+      "exact_x_class_component_norm": 7.877228069895857e-06,
+      "exact_x_class_component_norm_stderr": 1.1963933049364824e-08,
+      "exact_x_class_logical_norm": 0.9886,
+      "exact_x_class_logical_norm_stderr": 0.0015014855616283349,
+      "exact_x_class_dp": 5.306666666666648,
+      "exact_x_class_dp_stderr": 0.20382967756349657,
+      "exact_x_class_norm_dp": 2.1141929811980177e-05,
+      "exact_x_class_norm_dp_stderr": 8.120639579106803e-07,
+      "exact_x_class_component_norm_dp": 4.2283859623960354e-05,
+      "exact_x_class_component_norm_dp_stderr": 1.6241279158213606e-06,
+      "exact_x_class_logical_norm_dp": 5.306666666666648,
+      "exact_x_class_logical_norm_dp_stderr": 0.20382967756349657
+    },
+    {
+      "p": 0.53,
+      "p_low": 0.515,
+      "p_high": 0.55,
+      "runs": 5000,
+      "exact_x_class": 0.9998,
+      "exact_x_class_stderr": 0.00019999999999999998,
+      "exact_x_class_norm": 3.983235193345073e-06,
+      "exact_x_class_norm_stderr": 7.968063999490044e-10,
+      "exact_x_class_component_norm": 7.966470386690146e-06,
+      "exact_x_class_component_norm_stderr": 1.5936127998980087e-09,
+      "exact_x_class_logical_norm": 0.9998,
+      "exact_x_class_logical_norm_stderr": 0.00019999999999999998,
+      "exact_x_class_dp": 0.3257142857142854,
+      "exact_x_class_dp_stderr": 0.04289958747509524,
+      "exact_x_class_norm_dp": 1.297656137059806e-06,
+      "exact_x_class_norm_dp_stderr": 1.7091332927664019e-07,
+      "exact_x_class_component_norm_dp": 2.595312274119612e-06,
+      "exact_x_class_component_norm_dp_stderr": 3.4182665855328037e-07,
+      "exact_x_class_logical_norm_dp": 0.3257142857142854,
+      "exact_x_class_logical_norm_dp_stderr": 0.04289958747509524
+    },
+    {
+      "p": 0.55,
+      "p_low": 0.53,
+      "p_high": 0.6,
+      "runs": 5000,
+      "exact_x_class": 1.0,
+      "exact_x_class_stderr": 0.0,
+      "exact_x_class_norm": 3.984031999745022e-06,
+      "exact_x_class_norm_stderr": 0.0,
+      "exact_x_class_component_norm": 7.968063999490045e-06,
+      "exact_x_class_component_norm_stderr": 0.0,
+      "exact_x_class_logical_norm": 1.0,
+      "exact_x_class_logical_norm_stderr": 0.0,
+      "exact_x_class_dp": 0.002857142857142859,
+      "exact_x_class_dp_stderr": 0.002857142857142859,
+      "exact_x_class_norm_dp": 1.138294857070007e-08,
+      "exact_x_class_norm_dp_stderr": 1.138294857070007e-08,
+      "exact_x_class_component_norm_dp": 2.276589714140014e-08,
+      "exact_x_class_component_norm_dp_stderr": 2.276589714140014e-08,
+      "exact_x_class_logical_norm_dp": 0.002857142857142859,
+      "exact_x_class_logical_norm_dp_stderr": 0.002857142857142859
+    },
+    {
+      "p": 0.6,
+      "p_low": 0.55,
+      "p_high": 0.6,
+      "runs": 5000,
+      "exact_x_class": 1.0,
+      "exact_x_class_stderr": 0.0,
+      "exact_x_class_norm": 3.984031999745022e-06,
+      "exact_x_class_norm_stderr": 0.0,
+      "exact_x_class_component_norm": 7.968063999490045e-06,
+      "exact_x_class_component_norm_stderr": 0.0,
+      "exact_x_class_logical_norm": 1.0,
+      "exact_x_class_logical_norm_stderr": 0.0,
+      "exact_x_class_dp": 0.0,
+      "exact_x_class_dp_stderr": 0.0,
+      "exact_x_class_norm_dp": 0.0,
+      "exact_x_class_norm_dp_stderr": 0.0,
+      "exact_x_class_component_norm_dp": 0.0,
+      "exact_x_class_component_norm_dp_stderr": 0.0,
+      "exact_x_class_logical_norm_dp": 0.0,
+      "exact_x_class_logical_norm_dp_stderr": 0.0
+    }
+  ]
+}

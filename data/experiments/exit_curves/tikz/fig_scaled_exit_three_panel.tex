@@ -1,0 +1,30 @@
+% Three-panel numerical figure for qexit.tex.
+% Requires \usepackage{pgfplots} and \pgfplotsset{compat=1.18}.
+\begin{figure*}[t]
+\centering
+\begin{minipage}[t]{0.315\textwidth}
+\centering
+\input{fig_surface5_bit_scale_compact.tex}
+{\footnotesize (a) Bit-scale decomposition}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.315\textwidth}
+\centering
+\input{fig_scaled_exit_surface_codes_compact.tex}
+{\footnotesize (b) Surface-code derivatives}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.315\textwidth}
+\centering
+\input{fig_scaled_exit_bivariate_bicycle_codes_compact.tex}
+{\footnotesize (c) Bivariate-bicycle derivatives}
+\end{minipage}
+\caption{Numerical EXIT quantities for CSS codes on the quantum erasure
+channel.  Panel (a) shows the bit-scale decomposition for the surface
+$[[41,1]]$ code: the raw Pauli ambiguity $\mathbb{E}H(x\mid S)$ decomposes
+into correction ambiguity $\mathbb{E}H(C_X\mid S)$ plus the covered-stabilizer
+contribution $\mathbb{E}H(x\mid C_X,S)$.  Panels (b) and (c) show scaled
+component EXIT derivatives
+$\widetilde g_X(e)=g_X(e)/g_X(1/2)$ for surface and bivariate-bicycle code
+families.  The scaling shown in each legend is only for visual comparison; the
+unscaled area satisfies $\int_0^1 g_X(e)\,de=k/n$.}
+\label{fig:scaled-exit-numerics}
+\end{figure*}

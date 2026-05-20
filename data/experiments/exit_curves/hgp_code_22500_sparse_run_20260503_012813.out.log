@@ -1,0 +1,3 @@
+RUN hgp_code_22500_900_d_peg_sparse.npz n=22500 runs=200 bit_points=27 paired_points=15
+DONE hgp_code_22500_900_d_peg_sparse.npz bit_elapsed=3092.873 paired_elapsed=2461.788
+PLOTS data\experiments\exit_curves\hgp_code_22500_900_d_peg_sparse_exit_rule1.png data\experiments\exit_curves\hgp_code_22500_900_d_peg_sparse_exit_rule1_paired_derivative.png data\experiments\exit_curves\hgp_code_22500_900_d_peg_sparse_exit_rule1_hybrid_paired3.png

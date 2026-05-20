@@ -1,0 +1,67 @@
+{
+  "code": {
+    "path": "codes\\gross_HxHzLxLz.npz",
+    "name": "gross_HxHzLxLz",
+    "n": 144,
+    "rank_hx": 66,
+    "rank_hz": 66,
+    "k": 12,
+    "rate": 0.08333333333333333
+  },
+  "config": {
+    "component": "x",
+    "syndrome": "S_Z",
+    "runs": 5,
+    "seed": 0,
+    "p_erasure_grid": [
+      0.0
+    ],
+    "p_error_grid": [
+      0.1
+    ],
+    "max_exact_affine_dim": 0,
+    "approx_samples": 500,
+    "mcmc_burnin": 500,
+    "mcmc_thin": 1
+  },
+  "quantity_notation": {
+    "posterior_x_error": {
+      "notation": "H(x | Y,S)",
+      "description": "Posterior component-error entropy in bits. Exact only when all samples use exact_affine_enumeration."
+    },
+    "posterior_x_class": {
+      "notation": "H(C_X | Y,S)",
+      "description": "Posterior correction-class entropy modulo same-type stabilizers. MCMC rows are list-restricted estimates."
+    },
+    "posterior_x_degeneracy_gain": {
+      "notation": "H(x | Y,S) - H(C_X | Y,S)",
+      "description": "Entropy reduction from stabilizer degeneracy under the posterior model."
+    }
+  },
+  "points": [
+    {
+      "p_erasure": 0.0,
+      "p_error": 0.1,
+      "runs": 5,
+      "valid_runs": 5,
+      "exact_runs": 0,
+      "list_runs": 5,
+      "posterior_x_error": 1.0,
+      "posterior_x_error_stderr": 0.4472135954999579,
+      "posterior_x_class": 0.7,
+      "posterior_x_class_stderr": 0.29999999999999993,
+      "posterior_x_degeneracy_gain": 0.3000000000000001,
+      "posterior_x_degeneracy_gain_stderr": 0.20000000000000004,
+      "posterior_x_error_component_norm": 0.006944444444444444,
+      "posterior_x_class_component_norm": 0.004861111111111111,
+      "posterior_x_degeneracy_gain_component_norm": 0.002083333333333334,
+      "mean_affine_dimension": 78.0,
+      "max_affine_dimension": 78,
+      "mean_list_size": 2.4,
+      "posterior_x_class_logical_norm": 0.05833333333333333,
+      "posterior_x_class_logical_norm_stderr": 0.024999999999999994,
+      "mean_mcmc_acceptance_rate": 0.021
+    }
+  ],
+  "elapsed_seconds": 0.08729389985091984
+}

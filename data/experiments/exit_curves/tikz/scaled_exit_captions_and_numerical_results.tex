@@ -1,0 +1,53 @@
+\section{Numerical Results}
+
+We complement the EXIT area identities with exact finite-length calculations
+for several CSS code families.  For an erasure probability $e$, let
+\[
+g_X(e):=\frac{d}{de}\frac{1}{n}\E[H(C_X\mid E,S)]
+\]
+denote the $X$-component correction-entropy EXIT derivative.  This is one CSS
+component of Theorem~\ref{thm:css-exit}.  Its unscaled area is fixed by the
+endpoint entropy:
+\[
+\int_0^1 g_X(e)\,de
+=\frac{1}{n}\Bigl(\E[H(C_X\mid E=[n],S)]-\E[H(C_X\mid E=\varnothing,S)]\Bigr)
+=\frac{k}{n}.
+\]
+Thus the numerical area under the unscaled curve is the code rate.  In
+Fig.~\ref{fig:scaled-exit-numerics} we instead plot the scaled shape
+\[
+\widetilde g_X(e):=\frac{g_X(e)}{g_X(1/2)}.
+\]
+The word ``scaled'' in each legend entry gives the multiplier
+$1/g_X(1/2)$ used for visual comparison.
+
+\input{fig_scaled_exit_three_panel.tex}
+
+Panel (a) illustrates the fixed-erasure decomposition behind the CSS EXIT
+identity on the $[[41,1]]$ surface code.  The top curve is the raw
+$X$-component Pauli ambiguity $\E H(x\mid S)$.  The lower correction curve is
+$\E H(C_X\mid S)$, and the gap between them is the covered-stabilizer
+contribution $\E H(x\mid C_X,S)$.  Thus the bit-scale plot shows directly the
+subtraction of stabilizer degeneracy that converts raw Pauli entropy into
+correction entropy.
+
+The surface-code panel uses distances
+$d\in\{7,11,21,45,75,251}$.  The unscaled
+trapezoidal areas stored for these curves agree with $k/n$ to within
+0.006 relative error.  The displayed surface curves are scaled by the
+factors listed in the legend, ranging from 20.5
+for $d=7$ to $2.07\times 10^{3}$ for
+$d=251$.
+
+The bivariate-bicycle panel contains the gross family
+$[[576,16]]$ and
+$[[2304,16]]$, and the two-gross family
+$[[1152,12]]$ and
+$[[4608,12]]$.  The corresponding unscaled rates are
+0.02778,
+0.006944,
+0.01042, and
+0.002604.  The trapezoidal EXIT areas
+match these rates to within 0.0002 relative error over
+the sampled window.  Panel (c) repeats the bivariate-bicycle panel as a
+placeholder for a third comparison.

@@ -1,0 +1,29 @@
+% Compact PGFPlots panel for sampled qldpc_96_2_6_witness_densified_cap7 BSC correction-class entropy.
+% Requires \usepackage{pgfplots} and \pgfplotsset{compat=1.18}.
+\begin{tikzpicture}
+\begin{axis}[
+  name=Qldpc9626WitnessDensifiedCap7BSCClassEntropyAxis,
+  width=\linewidth,
+  height=0.78\linewidth,
+  title={BSC correction-class entropy},
+  title style={font=\scriptsize},
+  xlabel={$p$},
+  ylabel={bits},
+  xmin=0, xmax=0.5,
+  ymin=-0.5, ymax=2.1,
+  grid=both,
+  major grid style={black!12},
+  minor grid style={black!6},
+  tick align=outside,
+  tick label style={font=\scriptsize},
+  label style={font=\scriptsize},
+  legend cell align={left},
+  legend style={draw=black!15, fill=white, fill opacity=0.82, text opacity=1, at={(0.02,0.98)}, anchor=north west, font=\tiny},
+]
+\addplot[black!70, dashed, line width=0.55pt] coordinates {(0,2) (0.5,2)};
+\addlegendentry{$k$}
+\addplot+[color=orange, mark=square*, mark size=1.0pt, line width=0.65pt]
+coordinates {(0,0) (0.025,0.147983616883) (0.05,0.318652972859) (0.075,0.286573644481) (0.1,0.275772755546) (0.125,0.39847297073) (0.15,0.573590321278) (0.175,0.863217992462) (0.2,0.901293851917) (0.225,0.881617021063) (0.25,1.02258118516) (0.275,1.22956960346) (0.3,1.46841575604) (0.325,1.61085247717) (0.35,1.85117847466) (0.375,1.88536776723) (0.4,1.95100356128) (0.425,1.98604092236) (0.45,1.9959199175) (0.475,1.99809969993) (0.5,2)};
+\addlegendentry{$\mathbb{E}H(C_X\mid S)$}
+\end{axis}
+\end{tikzpicture}

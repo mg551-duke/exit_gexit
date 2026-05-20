@@ -1,0 +1,2 @@
+code,path,sides_run,d_exact_or_bound,proved_exact,assume_xz_symmetric,side_details_json
+gross_HxHzLxLz,codes\gross_HxHzLxLz.npz,z,12,True,True,"{""z"": {""rows_completed"": 12, ""rows_total"": 12, ""side_distance"": 12, ""side_elapsed_seconds"": 4139.381498599891, ""side_proved_exact"": true}}"

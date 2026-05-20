@@ -1,0 +1,29 @@
+% Compact PGFPlots panel for sampled qldpc_96_4_7_fixed_k_absorb_cap7 BSC correction-class entropy.
+% Requires \usepackage{pgfplots} and \pgfplotsset{compat=1.18}.
+\begin{tikzpicture}
+\begin{axis}[
+  name=Qldpc9647FixedKAbsorbCap7BSCClassEntropyAxis,
+  width=\linewidth,
+  height=0.78\linewidth,
+  title={BSC correction-class entropy},
+  title style={font=\scriptsize},
+  xlabel={$p$},
+  ylabel={bits},
+  xmin=0, xmax=0.5,
+  ymin=-0.5, ymax=4.2,
+  grid=both,
+  major grid style={black!12},
+  minor grid style={black!6},
+  tick align=outside,
+  tick label style={font=\scriptsize},
+  label style={font=\scriptsize},
+  legend cell align={left},
+  legend style={draw=black!15, fill=white, fill opacity=0.82, text opacity=1, at={(0.02,0.98)}, anchor=north west, font=\tiny},
+]
+\addplot[black!70, dashed, line width=0.55pt] coordinates {(0,4) (0.5,4)};
+\addlegendentry{$k$}
+\addplot+[color=orange, mark=square*, mark size=1.0pt, line width=0.65pt]
+coordinates {(0,0) (0.025,0.171175387344) (0.05,0.224530013709) (0.075,0.2491540234) (0.1,0.608480093062) (0.125,0.606976686921) (0.15,0.765935068551) (0.175,1.02892692316) (0.2,0.778063322394) (0.225,1.09508060191) (0.25,1.78258035766) (0.275,1.75502121013) (0.3,2.00550439683) (0.325,2.25183801983) (0.35,2.84475986138) (0.375,3.5171709948) (0.4,3.78092100992) (0.425,3.9300028658) (0.45,3.97975650398) (0.475,3.99218570686) (0.5,4)};
+\addlegendentry{$\mathbb{E}H(C_X\mid S)$}
+\end{axis}
+\end{tikzpicture}
