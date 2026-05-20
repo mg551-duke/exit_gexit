@@ -28,5 +28,5 @@ export OPENBLAS_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 export NUMEXPR_NUM_THREADS=1
 
-echo "running ${SCRIPT} with ${SLURM_CPUS_PER_TASK:-1} worker processes"
+echo "running ${SCRIPT} with ${SLURM_CPUS_PER_TASK:-1} coupled sample-batch worker processes"
 "$PYTHON_BIN" "$SCRIPT"

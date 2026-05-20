@@ -63,11 +63,12 @@ def run_surface_distance(
         workers=workers,
     )
     result["job"] = {
-        "kind": "entropy-centered BSC GEXIT surface run",
+        "kind": "entropy-centered coupled BSC GEXIT surface run",
         "distance": distance,
         "samples": samples,
         "seed": seed,
         "workers": workers,
+        "paired_derivative": result.get("paired_derivative", False),
         "entropy_grid": result["grid"]["t"],
     }
     write_outputs(result, out_dir, out_dir / "tikz")

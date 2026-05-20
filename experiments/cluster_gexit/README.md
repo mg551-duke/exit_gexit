@@ -21,9 +21,11 @@ d=21:  6 CPUs, 64G
 d=45:  4 CPUs, 64G
 ```
 
-The Python runner uses `SLURM_CPUS_PER_TASK` worker processes across independent
-p-grid points, except `d=21` and `d=45` are capped in their entrypoint scripts to
-avoid OOM from too many worker processes.
+The Python runner uses `SLURM_CPUS_PER_TASK` worker processes across coupled
+sample batches.  Each Monte Carlo sample is reused across the whole p-grid
+before derivatives are averaged, which is the BSC analogue of the paired EXIT
+derivative estimator.  The `d=21` and `d=45` submissions use fewer processes to
+avoid OOM from large factor-contraction state.
 
 To submit one distance directly:
 

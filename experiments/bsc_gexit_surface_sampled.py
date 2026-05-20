@@ -23,11 +23,13 @@ DEFAULT_OUT_DIR = ROOT / "data" / "experiments" / "gexit_curves"
 DEFAULT_TIKZ_DIR = DEFAULT_OUT_DIR / "tikz"
 
 _WORKER_HZ: np.ndarray | None = None
-_WORKER_LZ: np.ndarray | None = None
 _WORKER_Q_MODEL: "FactorModel | None" = None
 _WORKER_SYNDROME_RANK: int | None = None
 _WORKER_QUOTIENT_RANK: int | None = None
 _WORKER_N: int | None = None
+_WORKER_P_GRID: np.ndarray | None = None
+_WORKER_HZ_COLUMN_SUPPORTS: tuple[tuple[int, ...], ...] | None = None
+_WORKER_LZ_BITS: np.ndarray | None = None
 
 
 @dataclass(frozen=True)
@@ -105,7 +107,7 @@ def parse_args() -> argparse.Namespace:
         "--workers",
         type=int,
         default=1,
-        help="Number of worker processes used across independent p-grid points.",
+        help="Number of worker processes used across coupled sample batches.",
     )
     parser.add_argument("--seed", type=int, default=0)
     return parser.parse_args()
@@ -354,6 +356,14 @@ def bits_to_int(bits: np.ndarray) -> int:
     return value
 
 
+def column_supports(matrix: np.ndarray) -> tuple[tuple[int, ...], ...]:
+    matrix = (matrix % 2).astype(np.uint8)
+    return tuple(
+        tuple(int(row) for row in np.flatnonzero(matrix[:, col]))
+        for col in range(matrix.shape[1])
+    )
+
+
 def distance_from_name(name: str) -> int | None:
     match = re.search(r"surface(\d+)", name)
     return int(match.group(1)) if match else None
@@ -390,78 +400,188 @@ def format_scale(value: float) -> str:
     return f"{value:.3g}"
 
 
-def estimate_point(
+def sample_neg_logs_from_state(
     *,
-    hz: np.ndarray,
-    lz: np.ndarray,
     q_model: FactorModel,
     syndrome_rank: int,
     quotient_rank: int,
     p: float,
+    syndrome: np.ndarray,
+    logical: int,
+    cache: dict[int, tuple[float, float]],
+) -> tuple[float, float]:
+    if p == 0.0:
+        return 0.0, 0.0
+    if p == 0.5:
+        return float(syndrome_rank), float(quotient_rank)
+
+    key = bits_to_int(syndrome)
+    cached = cache.get(key)
+    if cached is None:
+        rhs0 = np.concatenate([syndrome, np.array([0], dtype=np.uint8)])
+        rhs1 = np.concatenate([syndrome, np.array([1], dtype=np.uint8)])
+        p0 = q_model.probability(rhs0, p)
+        p1 = q_model.probability(rhs1, p)
+        cached = (p0, p1)
+        cache[key] = cached
+    p0, p1 = cached
+    p_s = max(p0 + p1, np.finfo(float).tiny)
+    p_sm = max(p1 if logical else p0, np.finfo(float).tiny)
+    return -math.log2(p_s), -math.log2(p_sm)
+
+
+def estimate_coupled_batch(
+    *,
+    hz: np.ndarray,
+    hz_column_supports: tuple[tuple[int, ...], ...],
+    lz_bits: np.ndarray,
+    q_model: FactorModel,
+    syndrome_rank: int,
+    quotient_rank: int,
+    p_grid: np.ndarray,
     samples: int,
     rng: np.random.Generator,
-) -> dict[str, float]:
+) -> dict[str, np.ndarray | int]:
     n = hz.shape[1]
-    if p == 0.0:
-        return {
-            "h_s": 0.0,
-            "h_q": 0.0,
-            "h_s_stderr": 0.0,
-            "h_q_stderr": 0.0,
-        }
-    if p == 0.5:
-        return {
-            "h_s": float(syndrome_rank),
-            "h_q": float(quotient_rank),
-            "h_s_stderr": 0.0,
-            "h_q_stderr": 0.0,
-        }
+    p_grid = np.asarray(p_grid, dtype=float)
+    point_count = int(p_grid.size)
+    sum_h_s = np.zeros(point_count, dtype=np.float64)
+    sumsq_h_s = np.zeros(point_count, dtype=np.float64)
+    sum_h_q = np.zeros(point_count, dtype=np.float64)
+    sumsq_h_q = np.zeros(point_count, dtype=np.float64)
+    sum_class = np.zeros(point_count, dtype=np.float64)
+    sumsq_class = np.zeros(point_count, dtype=np.float64)
+    sum_dydp = np.zeros(point_count, dtype=np.float64)
+    sumsq_dydp = np.zeros(point_count, dtype=np.float64)
+    caches: list[dict[int, tuple[float, float]]] = [dict() for _ in range(point_count)]
 
-    cache: dict[int, tuple[float, float]] = {}
-    neg_log_s = np.empty(samples, dtype=np.float64)
-    neg_log_q = np.empty(samples, dtype=np.float64)
-    for sample_idx in range(samples):
-        error = (rng.random(n) < p).astype(np.uint8)
-        syndrome = (hz @ error % 2).astype(np.uint8)
-        logical = int((lz @ error % 2)[0])
-        key = bits_to_int(syndrome)
-        cached = cache.get(key)
-        if cached is None:
-            rhs0 = np.concatenate([syndrome, np.array([0], dtype=np.uint8)])
-            rhs1 = np.concatenate([syndrome, np.array([1], dtype=np.uint8)])
-            p0 = q_model.probability(rhs0, p)
-            p1 = q_model.probability(rhs1, p)
-            cached = (p0, p1)
-            cache[key] = cached
-        p0, p1 = cached
-        p_s = max(p0 + p1, np.finfo(float).tiny)
-        p_sm = max(p1 if logical else p0, np.finfo(float).tiny)
-        neg_log_s[sample_idx] = -math.log2(p_s)
-        neg_log_q[sample_idx] = -math.log2(p_sm)
+    for _ in range(samples):
+        thresholds = rng.random(n)
+        threshold_order = np.argsort(thresholds)
+        next_flip = 0
+        syndrome = np.zeros(hz.shape[0], dtype=np.uint8)
+        logical = 0
+        h_s_values = np.empty(point_count, dtype=np.float64)
+        h_q_values = np.empty(point_count, dtype=np.float64)
+        for idx, p in enumerate(p_grid):
+            if p == 0.0:
+                h_s, h_q = 0.0, 0.0
+            elif p == 0.5:
+                h_s, h_q = float(syndrome_rank), float(quotient_rank)
+            else:
+                while next_flip < n and thresholds[threshold_order[next_flip]] < p:
+                    qubit = int(threshold_order[next_flip])
+                    for check in hz_column_supports[qubit]:
+                        syndrome[check] ^= 1
+                    if lz_bits[qubit]:
+                        logical ^= 1
+                    next_flip += 1
+                h_s, h_q = sample_neg_logs_from_state(
+                    q_model=q_model,
+                    syndrome_rank=syndrome_rank,
+                    quotient_rank=quotient_rank,
+                    p=float(p),
+                    syndrome=syndrome,
+                    logical=logical,
+                    cache=caches[idx],
+                )
+            h_s_values[idx] = h_s
+            h_q_values[idx] = h_q
+
+        class_values = h_q_values - h_s_values
+        class_norm_values = class_values / n
+        dydp_values = np.gradient(class_norm_values, p_grid)
+        dydp_values[0] = 0.0
+        dydp_values[-1] = 0.0
+
+        sum_h_s += h_s_values
+        sumsq_h_s += h_s_values * h_s_values
+        sum_h_q += h_q_values
+        sumsq_h_q += h_q_values * h_q_values
+        sum_class += class_values
+        sumsq_class += class_values * class_values
+        sum_dydp += dydp_values
+        sumsq_dydp += dydp_values * dydp_values
 
     return {
-        "h_s": float(neg_log_s.mean()),
-        "h_q": float(neg_log_q.mean()),
-        "h_s_stderr": float(neg_log_s.std(ddof=1) / math.sqrt(samples)),
-        "h_q_stderr": float(neg_log_q.std(ddof=1) / math.sqrt(samples)),
+        "samples": int(samples),
+        "sum_h_s": sum_h_s,
+        "sumsq_h_s": sumsq_h_s,
+        "sum_h_q": sum_h_q,
+        "sumsq_h_q": sumsq_h_q,
+        "sum_class": sum_class,
+        "sumsq_class": sumsq_class,
+        "sum_dydp": sum_dydp,
+        "sumsq_dydp": sumsq_dydp,
     }
 
 
-def row_from_estimate(p: float, estimate: dict[str, float], n: int) -> dict[str, float]:
-    raw_error = n * binary_entropy(float(p)) - estimate["h_s"]
-    class_entropy = estimate["h_q"] - estimate["h_s"]
-    saved = raw_error - class_entropy
-    return {
-        "p": float(p),
-        "posterior_x_error": raw_error,
-        "posterior_x_class": class_entropy,
-        "posterior_x_saved_by_stabilizers": saved,
-        "posterior_x_error_stderr": estimate["h_s_stderr"],
-        "posterior_x_class_stderr": math.sqrt(
-            estimate["h_s_stderr"] ** 2 + estimate["h_q_stderr"] ** 2
-        ),
-        "posterior_x_class_component_norm": class_entropy / n,
+def standard_error(
+    sum_values: np.ndarray,
+    sumsq_values: np.ndarray,
+    samples: int,
+) -> np.ndarray:
+    if samples <= 1:
+        return np.zeros_like(sum_values)
+    variance = (sumsq_values - sum_values * sum_values / samples) / (samples - 1)
+    variance = np.maximum(variance, 0.0)
+    return np.sqrt(variance / samples)
+
+
+def merge_coupled_batches(
+    batches: list[dict[str, np.ndarray | int]],
+    p_grid: np.ndarray,
+    n: int,
+) -> list[dict[str, float]]:
+    samples = int(sum(int(batch["samples"]) for batch in batches))
+    if samples <= 0:
+        raise ValueError("at least one coupled sample is required")
+
+    names = (
+        "sum_h_s",
+        "sumsq_h_s",
+        "sum_h_q",
+        "sumsq_h_q",
+        "sum_class",
+        "sumsq_class",
+        "sum_dydp",
+        "sumsq_dydp",
+    )
+    totals = {
+        name: sum(
+            (batch[name] for batch in batches),
+            np.zeros_like(p_grid, dtype=np.float64),
+        )
+        for name in names
     }
+    mean_h_s = totals["sum_h_s"] / samples
+    mean_class = totals["sum_class"] / samples
+    mean_dydp = totals["sum_dydp"] / samples
+    h_s_stderr = standard_error(totals["sum_h_s"], totals["sumsq_h_s"], samples)
+    class_stderr = standard_error(totals["sum_class"], totals["sumsq_class"], samples)
+    dydp_stderr = standard_error(totals["sum_dydp"], totals["sumsq_dydp"], samples)
+
+    mean_dydp = np.maximum(mean_dydp, 0.0)
+    rows = []
+    for idx, p in enumerate(p_grid):
+        raw_error = n * binary_entropy(float(p)) - mean_h_s[idx]
+        class_entropy = mean_class[idx]
+        saved = raw_error - class_entropy
+        rows.append(
+            {
+                "p": float(p),
+                "posterior_x_error": float(raw_error),
+                "posterior_x_class": float(class_entropy),
+                "posterior_x_saved_by_stabilizers": float(saved),
+                "posterior_x_error_stderr": float(h_s_stderr[idx]),
+                "posterior_x_class_stderr": float(class_stderr[idx]),
+                "posterior_x_class_component_norm": float(class_entropy / n),
+                "posterior_x_class_component_norm_stderr": float(class_stderr[idx] / n),
+                "posterior_x_class_component_norm_dp": float(mean_dydp[idx]),
+                "posterior_x_class_component_norm_dp_stderr": float(dydp_stderr[idx]),
+            }
+        )
+    return rows
 
 
 def init_estimate_worker(
@@ -471,43 +591,50 @@ def init_estimate_worker(
     syndrome_rank: int,
     quotient_rank: int,
     n: int,
+    p_grid: np.ndarray | None = None,
 ) -> None:
     global _WORKER_HZ
-    global _WORKER_LZ
     global _WORKER_Q_MODEL
     global _WORKER_SYNDROME_RANK
     global _WORKER_QUOTIENT_RANK
     global _WORKER_N
+    global _WORKER_P_GRID
+    global _WORKER_HZ_COLUMN_SUPPORTS
+    global _WORKER_LZ_BITS
     _WORKER_HZ = hz
-    _WORKER_LZ = lz
     _WORKER_Q_MODEL = q_model
     _WORKER_SYNDROME_RANK = syndrome_rank
     _WORKER_QUOTIENT_RANK = quotient_rank
     _WORKER_N = n
+    _WORKER_P_GRID = None if p_grid is None else np.asarray(p_grid, dtype=float)
+    _WORKER_HZ_COLUMN_SUPPORTS = column_supports(hz)
+    _WORKER_LZ_BITS = (lz[0] % 2).astype(np.uint8)
 
 
-def estimate_grid_row_worker(task: tuple[float, int, int]) -> dict[str, float]:
-    p, samples, point_seed = task
+def estimate_coupled_batch_worker(task: tuple[int, int]) -> dict[str, np.ndarray | int]:
+    samples, point_seed = task
     if (
         _WORKER_HZ is None
-        or _WORKER_LZ is None
         or _WORKER_Q_MODEL is None
         or _WORKER_SYNDROME_RANK is None
         or _WORKER_QUOTIENT_RANK is None
         or _WORKER_N is None
+        or _WORKER_P_GRID is None
+        or _WORKER_HZ_COLUMN_SUPPORTS is None
+        or _WORKER_LZ_BITS is None
     ):
-        raise RuntimeError("estimate worker was not initialized")
-    estimate = estimate_point(
+        raise RuntimeError("coupled estimate worker was not initialized")
+    return estimate_coupled_batch(
         hz=_WORKER_HZ,
-        lz=_WORKER_LZ,
+        hz_column_supports=_WORKER_HZ_COLUMN_SUPPORTS,
+        lz_bits=_WORKER_LZ_BITS,
         q_model=_WORKER_Q_MODEL,
         syndrome_rank=_WORKER_SYNDROME_RANK,
         quotient_rank=_WORKER_QUOTIENT_RANK,
-        p=float(p),
-        samples=samples,
+        p_grid=_WORKER_P_GRID,
+        samples=int(samples),
         rng=np.random.default_rng(point_seed),
     )
-    return row_from_estimate(float(p), estimate, _WORKER_N)
 
 
 def compute_result(
@@ -527,6 +654,8 @@ def compute_result(
     q_model = FactorModel.from_matrix(q_matrix)
     syndrome_rank = binary_rank(hz)
     quotient_rank = q_model.rank
+    hz_column_supports = column_supports(hz)
+    lz_bits = (lz[0] % 2).astype(np.uint8)
     if p_grid is None:
         if points is None:
             raise ValueError("either points or p_grid must be provided")
@@ -537,49 +666,60 @@ def compute_result(
         raise ValueError("p grid must contain at least two points")
     if p_grid[0] < 0.0 or p_grid[-1] > 0.5:
         raise ValueError("BSC p grid must stay within [0, 0.5]")
+    samples = int(samples)
+    if samples <= 0:
+        raise ValueError("samples must be positive")
     workers = max(1, int(workers))
+    batch_count = min(workers, samples)
+    base_count, remainder = divmod(samples, batch_count)
+    sample_counts = [
+        base_count + (1 if idx < remainder else 0)
+        for idx in range(batch_count)
+    ]
     seed_sequence = np.random.SeedSequence(seed)
-    point_seeds = [
+    batch_seeds = [
         int(child.generate_state(1, dtype=np.uint32)[0])
-        for child in seed_sequence.spawn(p_grid.size)
+        for child in seed_sequence.spawn(batch_count)
     ]
     tasks = [
-        (float(p), int(samples), int(point_seed))
-        for p, point_seed in zip(p_grid, point_seeds)
+        (int(sample_count), int(batch_seed))
+        for sample_count, batch_seed in zip(sample_counts, batch_seeds)
     ]
-    if workers == 1:
-        rows = []
-        for p, sample_count, point_seed in tasks:
-            estimate = estimate_point(
+    if batch_count == 1:
+        batches = [
+            estimate_coupled_batch(
                 hz=hz,
-                lz=lz,
+                hz_column_supports=hz_column_supports,
+                lz_bits=lz_bits,
                 q_model=q_model,
                 syndrome_rank=syndrome_rank,
                 quotient_rank=quotient_rank,
-                p=p,
-                samples=sample_count,
-                rng=np.random.default_rng(point_seed),
+                p_grid=p_grid,
+                samples=tasks[0][0],
+                rng=np.random.default_rng(tasks[0][1]),
             )
-            rows.append(row_from_estimate(p, estimate, code.n))
+        ]
     else:
         with ProcessPoolExecutor(
-            max_workers=min(workers, len(tasks)),
+            max_workers=batch_count,
             initializer=init_estimate_worker,
-            initargs=(hz, lz, q_model, syndrome_rank, quotient_rank, code.n),
+            initargs=(hz, lz, q_model, syndrome_rank, quotient_rank, code.n, p_grid),
         ) as executor:
-            rows = list(executor.map(estimate_grid_row_worker, tasks))
+            batches = list(executor.map(estimate_coupled_batch_worker, tasks))
 
-    y = np.array([row["posterior_x_class_component_norm"] for row in rows])
-    dydp = np.gradient(y, p_grid)
-    dydp[0] = 0.0
-    dydp[-1] = 0.0
-    dydp = np.maximum(dydp, 0.0)
+    rows = merge_coupled_batches(batches, p_grid, code.n)
+    dydp = np.array(
+        [row["posterior_x_class_component_norm_dp"] for row in rows],
+        dtype=float,
+    )
     peak_idx = int(np.argmax(dydp))
     peak_value = float(dydp[peak_idx])
     scale = 1.0 / peak_value if peak_value > 0.0 else 1.0
     for row, value in zip(rows, dydp):
-        row["posterior_x_class_component_norm_dp"] = float(value)
         row["scaled_posterior_x_class_component_norm_dp"] = float(value * scale)
+        row["scaled_posterior_x_class_component_norm_dp_stderr"] = float(
+            row["posterior_x_class_component_norm_dp_stderr"] * scale
+        )
 
     return {
         "code": {
@@ -593,10 +733,12 @@ def compute_result(
             "rank_hz_observed": syndrome_rank,
             "rank_hz_lz_observed": quotient_rank,
         },
-        "method": "sampled exact-probability contraction",
+        "method": "coupled sampled exact-probability contraction",
         "samples": samples,
         "seed": seed,
         "workers": workers,
+        "batch_count": batch_count,
+        "paired_derivative": True,
         "grid": {
             "p": [float(p) for p in p_grid],
             "t": [float(t) for t in binary_entropy_axis(p_grid)],
