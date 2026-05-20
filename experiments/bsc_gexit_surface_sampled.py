@@ -5,6 +5,7 @@ import csv
 import json
 import math
 import re
+import time
 from concurrent.futures import ProcessPoolExecutor
 from collections import Counter
 from dataclasses import dataclass
@@ -110,6 +111,11 @@ def parse_args() -> argparse.Namespace:
         help="Number of worker processes used across coupled sample batches.",
     )
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument(
+        "--no-progress",
+        action="store_true",
+        help="Disable newline progress bars written to stdout.",
+    )
     return parser.parse_args()
 
 
@@ -400,6 +406,23 @@ def format_scale(value: float) -> str:
     return f"{value:.3g}"
 
 
+def progress_bar(completed: int, total: int, width: int = 28) -> str:
+    if total <= 0:
+        return "[" + "-" * width + "]"
+    filled = min(width, int(round(width * completed / total)))
+    return "[" + "#" * filled + "-" * (width - filled) + "]"
+
+
+def log_progress(label: str, completed: int, total: int) -> None:
+    pct = 100.0 * completed / total if total else 100.0
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    print(
+        f"[{timestamp}] {label} {completed}/{total} "
+        f"{pct:5.1f}% {progress_bar(completed, total)}",
+        flush=True,
+    )
+
+
 def sample_neg_logs_from_state(
     *,
     q_model: FactorModel,
@@ -441,6 +464,8 @@ def estimate_coupled_batch(
     p_grid: np.ndarray,
     samples: int,
     rng: np.random.Generator,
+    progress_label: str | None = None,
+    progress_steps: int = 20,
 ) -> dict[str, np.ndarray | int]:
     n = hz.shape[1]
     p_grid = np.asarray(p_grid, dtype=float)
@@ -454,8 +479,11 @@ def estimate_coupled_batch(
     sum_dydp = np.zeros(point_count, dtype=np.float64)
     sumsq_dydp = np.zeros(point_count, dtype=np.float64)
     caches: list[dict[int, tuple[float, float]]] = [dict() for _ in range(point_count)]
+    progress_stride = max(1, samples // max(1, progress_steps))
+    if progress_label is not None:
+        log_progress(progress_label, 0, samples)
 
-    for _ in range(samples):
+    for sample_idx in range(1, samples + 1):
         thresholds = rng.random(n)
         threshold_order = np.argsort(thresholds)
         next_flip = 0
@@ -502,6 +530,11 @@ def estimate_coupled_batch(
         sumsq_class += class_values * class_values
         sum_dydp += dydp_values
         sumsq_dydp += dydp_values * dydp_values
+        if (
+            progress_label is not None
+            and (sample_idx % progress_stride == 0 or sample_idx == samples)
+        ):
+            log_progress(progress_label, sample_idx, samples)
 
     return {
         "samples": int(samples),
@@ -611,8 +644,10 @@ def init_estimate_worker(
     _WORKER_LZ_BITS = (lz[0] % 2).astype(np.uint8)
 
 
-def estimate_coupled_batch_worker(task: tuple[int, int]) -> dict[str, np.ndarray | int]:
-    samples, point_seed = task
+def estimate_coupled_batch_worker(
+    task: tuple[int, int, int, int, bool],
+) -> dict[str, np.ndarray | int]:
+    batch_idx, batch_count, samples, point_seed, progress = task
     if (
         _WORKER_HZ is None
         or _WORKER_Q_MODEL is None
@@ -634,6 +669,11 @@ def estimate_coupled_batch_worker(task: tuple[int, int]) -> dict[str, np.ndarray
         p_grid=_WORKER_P_GRID,
         samples=int(samples),
         rng=np.random.default_rng(point_seed),
+        progress_label=(
+            f"batch {batch_idx + 1}/{batch_count}"
+            if progress
+            else None
+        ),
     )
 
 
@@ -644,6 +684,7 @@ def compute_result(
     seed: int = 0,
     p_grid: np.ndarray | None = None,
     workers: int = 1,
+    progress: bool = True,
 ) -> dict:
     code = load_code(code_path)
     if code.lz is None:
@@ -682,9 +723,23 @@ def compute_result(
         for child in seed_sequence.spawn(batch_count)
     ]
     tasks = [
-        (int(sample_count), int(batch_seed))
-        for sample_count, batch_seed in zip(sample_counts, batch_seeds)
+        (
+            int(batch_idx),
+            int(batch_count),
+            int(sample_count),
+            int(batch_seed),
+            bool(progress),
+        )
+        for batch_idx, (sample_count, batch_seed) in enumerate(
+            zip(sample_counts, batch_seeds)
+        )
     ]
+    if progress:
+        print(
+            f"starting coupled BSC GEXIT: {samples} samples, "
+            f"{p_grid.size} p-points, {batch_count} worker batches",
+            flush=True,
+        )
     if batch_count == 1:
         batches = [
             estimate_coupled_batch(
@@ -695,8 +750,9 @@ def compute_result(
                 syndrome_rank=syndrome_rank,
                 quotient_rank=quotient_rank,
                 p_grid=p_grid,
-                samples=tasks[0][0],
-                rng=np.random.default_rng(tasks[0][1]),
+                samples=tasks[0][2],
+                rng=np.random.default_rng(tasks[0][3]),
+                progress_label="batch 1/1" if progress else None,
             )
         ]
     else:
@@ -739,6 +795,7 @@ def compute_result(
         "workers": workers,
         "batch_count": batch_count,
         "paired_derivative": True,
+        "progress": bool(progress),
         "grid": {
             "p": [float(p) for p in p_grid],
             "t": [float(t) for t in binary_entropy_axis(p_grid)],
@@ -1024,6 +1081,7 @@ def main() -> None:
         seed=args.seed,
         p_grid=resolve_p_grid(args),
         workers=args.workers,
+        progress=not args.no_progress,
     )
     write_outputs(result, args.out_dir.resolve(), args.tikz_dir.resolve())
     scaling = result["scaling"]

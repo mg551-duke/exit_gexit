@@ -27,6 +27,9 @@ before derivatives are averaged, which is the BSC analogue of the paired EXIT
 derivative estimator.  The `d=21` and `d=45` submissions use fewer processes to
 avoid OOM from large factor-contraction state.
 
+Progress is written to the Slurm `.out` file as flushed newline bars, one per
+worker batch, at roughly 5% increments.
+
 To submit one distance directly:
 
 ```bash
