@@ -57,6 +57,21 @@ To submit one add-on directly:
 sbatch --cpus-per-task=20 --mem=64G experiments/cluster_gexit/run_surface_gexit.sbatch experiments/cluster_gexit/surface_gexit_d7_addon.py
 ```
 
+To submit a one-off add-on with a new seed and sample count:
+
+```bash
+sbatch \
+  --cpus-per-task=20 \
+  --mem=64G \
+  --export="ALL,SURFACE_GEXIT_DISTANCE=7,SURFACE_GEXIT_SAMPLES=200000,SURFACE_GEXIT_SEED=700071,SURFACE_GEXIT_WORKERS=20,SURFACE_GEXIT_REPEAT_LABEL=surface7_addon_200000_seed700071" \
+  experiments/cluster_gexit/run_surface_gexit.sbatch \
+  experiments/cluster_gexit/surface_gexit_addon.py
+```
+
+Do not run two merge-existing add-ons for the same distance at the same time;
+they both rewrite the same main result files.  Run them sequentially, or write
+repeat shards and merge afterward.
+
 To submit only the sharded large-distance jobs:
 
 ```bash
