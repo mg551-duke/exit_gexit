@@ -31,10 +31,28 @@ large factor-contraction state.
 Progress is written to the Slurm `.out` file as flushed newline bars, one per
 worker batch, at roughly 5% increments.
 
+To add 80,000 independent coupled samples to completed `d=7` and `d=11` runs,
+then merge the repeat into the main result files:
+
+```bash
+bash experiments/cluster_gexit/submit_surface_gexit_addons.sh
+```
+
+Each add-on job first writes its repeat under
+`data/experiments/gexit_curves/entropy_centered_surface_jobs/addons/`, then
+rewrites the merged main JSON/CSV/PNG/TikZ outputs in
+`entropy_centered_surface_jobs/`.
+
 To submit one distance directly:
 
 ```bash
 sbatch --cpus-per-task=2 --mem=64G experiments/cluster_gexit/run_surface_gexit.sbatch experiments/cluster_gexit/surface_gexit_d21.py
+```
+
+To submit one add-on directly:
+
+```bash
+sbatch --cpus-per-task=20 --mem=64G experiments/cluster_gexit/run_surface_gexit.sbatch experiments/cluster_gexit/surface_gexit_d7_addon.py
 ```
 
 Outputs are written under:

@@ -13,7 +13,13 @@ EXPERIMENTS_DIR = ROOT / "experiments"
 if str(EXPERIMENTS_DIR) not in sys.path:
     sys.path.insert(0, str(EXPERIMENTS_DIR))
 
-from bsc_gexit_surface_sampled import compute_result, entropy_centered_bsc_ps, write_outputs
+from bsc_gexit_surface_sampled import (
+    code_key,
+    compute_result,
+    entropy_centered_bsc_ps,
+    write_outputs,
+)
+from merge_bsc_gexit_repeats import load_result, merge_result_dicts
 
 
 DEFAULT_OUT_DIR = ROOT / "data" / "experiments" / "gexit_curves" / "entropy_centered_surface_jobs"
@@ -43,6 +49,8 @@ def run_surface_distance(
     seed: int,
     workers: int | None = None,
     out_dir: Path = DEFAULT_OUT_DIR,
+    merge_existing: bool = False,
+    repeat_label: str | None = None,
 ) -> None:
     if workers is None:
         workers = int(os.environ.get("SLURM_CPUS_PER_TASK", "1"))
@@ -71,4 +79,27 @@ def run_surface_distance(
         "paired_derivative": result.get("paired_derivative", False),
         "entropy_grid": result["grid"]["t"],
     }
-    write_outputs(result, out_dir, out_dir / "tikz")
+    if not merge_existing:
+        write_outputs(result, out_dir, out_dir / "tikz")
+        return
+
+    code = result["code"]
+    key = code_key(code["name"], code["n"], code["distance"])
+    label = repeat_label or f"{key}_addon_seed{seed}_samples{samples}"
+    repeat_dir = out_dir / "addons" / label
+    write_outputs(result, repeat_dir, repeat_dir / "tikz")
+
+    base_json = out_dir / f"{key}_bsc_gexit_sampled.json"
+    repeat_json = repeat_dir / f"{key}_bsc_gexit_sampled.json"
+    if not base_json.exists():
+        raise FileNotFoundError(
+            f"base result {base_json} does not exist; repeat was written to {repeat_dir}"
+        )
+
+    merged = merge_result_dicts(
+        load_result(base_json),
+        load_result(repeat_json),
+        base_path=base_json,
+        repeat_path=repeat_json,
+    )
+    write_outputs(merged, out_dir, out_dir / "tikz")
