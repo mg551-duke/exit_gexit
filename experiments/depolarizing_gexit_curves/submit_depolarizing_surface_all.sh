@@ -21,5 +21,5 @@ submit_one() {
 
 submit_one 5 20 64G 03:00:00
 submit_one 7 20 64G 06:00:00
-submit_one 9 20 64G 09:00:00
-submit_one 11 20 64G 09:00:00
+submit_one 9 20 64G 18:00:00
+submit_one 11 8 64G 24:00:00
