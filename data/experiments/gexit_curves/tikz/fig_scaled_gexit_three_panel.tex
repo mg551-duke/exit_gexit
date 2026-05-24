@@ -1,0 +1,27 @@
+% Three-panel numerical GEXIT figure.
+% Requires \usepackage{pgfplots} and \pgfplotsset{compat=1.18}.
+\begin{figure*}[t]
+\centering
+\begin{minipage}[t]{0.315\textwidth}
+\centering
+\input{fig_surface5_bsc_bit_scale_compact.tex}
+{\footnotesize (a) BSC bit-scale decomposition}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.315\textwidth}
+\centering
+\input{fig_scaled_bsc_gexit_surface_codes_compact.tex}
+{\footnotesize (b) BSC GEXIT derivatives}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.315\textwidth}
+\centering
+\input{fig_scaled_depolarizing_gexit_surface_codes_compact.tex}
+{\footnotesize (c) Depolarizing GEXIT derivatives}
+\end{minipage}
+\caption{Surface-code GEXIT numerics.  Panel (a) shows the BSC bit-scale
+decomposition for the $d=5$ surface code.  Panel (b) overlays scaled BSC
+component GEXIT derivatives against $t=h_2(p)$.  Panel (c) overlays scaled
+depolarizing GEXIT derivatives against normalized Pauli entropy
+$t=H_4(p)/2$.  Legend scaling is for visual comparison only; unscaled areas
+are recorded in the accompanying scaling CSV files.}
+\label{fig:surface-gexit-numerics}
+\end{figure*}

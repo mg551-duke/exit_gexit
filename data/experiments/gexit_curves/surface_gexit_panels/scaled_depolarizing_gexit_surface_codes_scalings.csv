@@ -1,0 +1,3 @@
+distance,n,k,csv,area,target_area,relative_area_error,scale
+5,41,1,data/experiments/depolarizing_gexit_curves/cluster_surface_jobs/surface5_depolarizing_gexit_sampled.csv,0.0514792982419,0.0487804878049,0.0553256139598,7.11192433249
+7,85,1,data/experiments/depolarizing_gexit_curves/cluster_surface_jobs/surface7_depolarizing_gexit_sampled.csv,0.0248207310615,0.0235294117647,0.0548810701139,11.6071724006
